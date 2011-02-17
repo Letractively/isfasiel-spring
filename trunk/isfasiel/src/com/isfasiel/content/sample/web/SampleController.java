@@ -1,7 +1,6 @@
 package com.isfasiel.content.sample.web;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,7 @@ public class SampleController extends BaseController{
 	private SampleService sampleService;
 	
 	@RequestMapping(value="/sample.do")
-	public String go(HttpServletRequest request) throws Exception {
+	public String go() throws Exception {
 		sampleService.insert(getData());
 		return "";
 	}
