@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.isfasiel.util.data.Data;
 
 public class BaseController {
+	
 	@Autowired
 	HttpServletRequest request;
 	

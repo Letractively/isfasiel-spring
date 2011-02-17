@@ -86,7 +86,6 @@ public class BaseDAO {
 	protected Object execute() throws Exception {
 		return execute(queryList);
 	}
-	
 	protected Data execute(final Data cQueryList) throws Exception {
 		Data result = getSqlMapClientTemplate().execute(
 				new SqlMapClientCallback<Data>() {
@@ -129,5 +128,4 @@ public class BaseDAO {
 			);
 		return result;
 	}
-	
 }
