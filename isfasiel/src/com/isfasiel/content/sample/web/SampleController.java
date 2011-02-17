@@ -23,8 +23,9 @@ public class SampleController extends BaseController{
 	
 	@RequestMapping(value="/sample.do")
 	public String go() throws Exception {
+		getData();
 		sampleService.insert(getData());
-		return "";
+		return "test";
 	}
 	
 	@RequestMapping(value="/sample/create/{id}/{name}")
