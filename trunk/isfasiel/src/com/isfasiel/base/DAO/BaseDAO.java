@@ -11,7 +11,14 @@ import org.springframework.orm.ibatis.SqlMapClientTemplate;
 
 import com.ibatis.sqlmap.client.SqlMapExecutor;
 import com.isfasiel.util.data.Data;
-
+/**
+ * @author Bae, Byeongseon.
+ * @Project     : isfasiel
+ * @Package     : com.isfasiel.base.DAO
+ * @FileName  : BaseDAO.java
+ * @Date         : 2011. 2. 18. 
+ * Description :
+ */
 public class BaseDAO {
 	
 	public final String TYPE_LIST = "LIST";
