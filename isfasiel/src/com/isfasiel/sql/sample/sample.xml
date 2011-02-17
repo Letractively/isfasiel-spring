@@ -10,7 +10,7 @@
   	INSERT INTO TN_SAMPLE (ID, NAME) VALUES (#id#, #name#)
   </insert>
 	<select id="sampleDAO.Select" resultClass="Sample">
-		SELECT * FROM TN_SAMPLE
+		SELECT * FROM TN_SAMPLE ORDER BY ID
 	</select>  
   
   <!-- 
