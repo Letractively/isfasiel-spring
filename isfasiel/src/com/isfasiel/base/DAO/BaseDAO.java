@@ -16,7 +16,7 @@ import com.isfasiel.util.data.Data;
  * @Project     : isfasiel
  * @Package     : com.isfasiel.base.DAO
  * @FileName  : BaseDAO.java
- * @Date         : 2011. 2. 18. 
+ * @Date         : 2011. 2. 18.
  * Description :
  */
 public class BaseDAO {
