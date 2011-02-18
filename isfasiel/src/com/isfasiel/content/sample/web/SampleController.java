@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.isfasiel.base.web.BaseController;
 import com.isfasiel.content.sample.service.SampleService;
 import com.isfasiel.content.sample.service.SampleVO;
+import com.isfasiel.util.data.Data;
 import com.isfasiel.util.smtp.EmailDelivery;
 @Controller
 public class SampleController extends BaseController{
@@ -22,9 +24,10 @@ public class SampleController extends BaseController{
 	private SampleService sampleService;
 	
 	@RequestMapping(value="/sample.do")
-	public String go() throws Exception {
-		getData();
-		sampleService.insert(getData());
+	public String go(Model model) throws Exception {
+		
+		Data result = sampleService.insert(getData());
+		model.addAttribute("result", result.toList());
 		return "test";
 	}
 	

@@ -391,9 +391,27 @@ public class Data {
 	}
 	
 	public Data(List<HashMap<String,Object>> list) {
+		if (list == null ) {return;}
+		
 		int size = list.size();
+		if(size == 0) {return;}
+		
+		HashMap<String, Object> record = list.get(0);
+		Set<String> set = record.keySet();
+		Object[] columnNameList = set.toArray();
+		int paramLength = columnNameList.length;
+		String[] strColumnNameList = new String[paramLength];
+		
+		for( int i =0; i < paramLength; i++ ) {
+			strColumnNameList[i] = toKeyName(columnNameList[i].toString());
+		}
+		
 		for(int i =0; i < size; i++) {
-			add(list.get(i));
+			record = list.get(i);
+			int orgSize = size();
+			for( int j =0; j < paramLength; j++) {
+				add(orgSize + i, strColumnNameList[j], record.get(columnNameList[j].toString()));
+			}
 		}
 	}
 	
@@ -532,11 +550,11 @@ public class Data {
 		String[] textList = columnName.split("_");
 		String name = textList[0].toLowerCase();
 		int length = textList.length;
+		
 		for(int i =1; i < length; i++) {
 			String text = textList[i];
 			name = name + text.charAt(0) + text.substring(1, text.length()); 
 		}
 		return name;
 	}
-	
 }
