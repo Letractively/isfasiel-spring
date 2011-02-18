@@ -9,6 +9,7 @@ import org.springframework.beans.factory.config.Scope;
 public class TreadScope implements Scope {
 
 	private final ThreadLocal threadScope = new ThreadLocal() {
+		@Override
 		protected Object initialValue() {
 			return new HashMap();
 		}

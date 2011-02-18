@@ -2,7 +2,6 @@ package com.isfasiel.base.DAO;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -83,12 +82,29 @@ public class BaseDAO {
 		return this.baseSqlMapClient.getSqlMapClientTemplate();
 	}
 	
+	protected Data list(String queryName, HashMap<String, Object> param) throws Exception{
+		return new Data(this.getSqlMapClientTemplate().queryForList(queryName, param));
+	}
+	
+	protected Object insert(String queryName, HashMap<String, Object> param) throws Exception {
+		return this.getSqlMapClientTemplate().insert(queryName, param);
+	}
+	
+	protected int update(String queryName, HashMap<String, Object> param) throws Exception {
+		return this.getSqlMapClientTemplate().update(queryName, param);
+	}
+	
+	protected int delete(String queryName, HashMap<String, Object> param) throws Exception {
+		return this.getSqlMapClientTemplate().delete(queryName, param);
+	}
+	
 	protected Object execute() throws Exception {
 		return execute(queryList);
 	}
 	protected Data execute(final Data cQueryList) throws Exception {
 		Data result = getSqlMapClientTemplate().execute(
 				new SqlMapClientCallback<Data>() {
+					@Override
 					public Data doInSqlMapClient(SqlMapExecutor executor) throws SQLException {
 						
 						int size = cQueryList.size();
@@ -99,7 +115,7 @@ public class BaseDAO {
 							HashMap<String, Object> param = (HashMap<String, Object>)cQueryList.get(i, TYPE_DATA_PARAM);
 							if(type.equals(TYPE_LIST)) {
 								Data result = new Data();
-								result.add((List<HashMap<String, Object>>)executor.queryForList(query, param));
+								result.add(executor.queryForList(query, param));
 								cQueryList.add(i, TYPE_DATA_RESULT, result);
 							} else if(type.equals(TYPE_INT)) {
 								Integer result = (Integer)executor.queryForObject(query, param);
@@ -108,7 +124,7 @@ public class BaseDAO {
 								String result = (String)executor.queryForObject(query, param);
 								cQueryList.add(i, TYPE_DATA_RESULT, result);
 							} else if(type.equals(TYPE_OBJECT)) {
-								Object result = (Object)executor.queryForObject(query, param);
+								Object result = executor.queryForObject(query, param);
 								cQueryList.add(i, TYPE_DATA_RESULT, result);
 							} else if(type.equals(TYPE_INSERT)) {
 								Object result = executor.insert(query, param);
