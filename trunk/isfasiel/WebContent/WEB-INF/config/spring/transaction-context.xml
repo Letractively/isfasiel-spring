@@ -14,7 +14,8 @@
 	
 	<tx:advice id="txAdvice" transaction-manager="txManager">
 		<tx:attributes>
-			<tx:method name="*" rollback-for="Exception"/>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="*" rollback-for="Exception" propagation="REQUIRED"/>
 		</tx:attributes>
 	</tx:advice>
     
@@ -24,7 +25,6 @@
 		<aop:advisor advice-ref="txAdvice"
 			pointcut-ref="requiredTx" />
 	</aop:config>
-	
 	
 
 </beans>
