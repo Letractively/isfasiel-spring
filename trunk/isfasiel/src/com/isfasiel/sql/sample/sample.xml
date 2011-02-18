@@ -9,7 +9,7 @@
   <insert id="sampleDAO.insert" >
   	INSERT INTO TN_SAMPLE (ID, NAME) VALUES (#id#, #name#)
   </insert>
-	<select id="sampleDAO.Select" resultClass="Sample">
+	<select id="sampleDAO.Select" resultClass="java.util.HashMap">
 		SELECT * FROM TN_SAMPLE ORDER BY ID
 	</select>  
   

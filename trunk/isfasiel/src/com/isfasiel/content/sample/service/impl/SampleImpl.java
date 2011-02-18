@@ -20,8 +20,8 @@ public class SampleImpl implements SampleService {
 	}
 	
 	@Override
-	public void insert(Data data) throws Exception {
-		sampleDAO.insert(data);
+	public Data insert(Data data) throws Exception {
+		return sampleDAO.insert(data);
 		
 	}
 
