@@ -503,9 +503,11 @@ public class Data {
 	@Override
 	public String toString() {
 		int i,j;
-		StringBuilder form = new StringBuilder();
-		Object[] names = getColumnNameList();
 		
+		Object[] names = getColumnNameList();
+		if( names == null ) {return "empty";};
+		if( names.length == 0) {return "empty";};
+		StringBuilder form = new StringBuilder();
 		int size = hMapList.size();
 		form.append("SIZE : " + size+"\n");
 		form.append("|\t");

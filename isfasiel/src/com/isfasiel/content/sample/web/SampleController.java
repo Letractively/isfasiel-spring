@@ -1,5 +1,7 @@
 package com.isfasiel.content.sample.web;
 
+import java.util.Properties;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,10 @@ public class SampleController extends BaseController{
 	
 	@RequestMapping(value="/sample.do")
 	public String go(Model model) throws Exception {
-		
-		Data result = sampleService.insert(getData());
-		model.addAttribute("result", result.toList());
+		System.out.println(properties.getProperty("file.baseDir"));
+		System.out.println(properties.getProperty("file.mineType"));
+		//Data result = sampleService.insert(getData());
+		//model.addAttribute("result", result.toList());
 		return "test";
 	}
 	
