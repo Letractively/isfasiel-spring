@@ -4,6 +4,8 @@
     "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="Sample">
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	
   <typeAlias alias="Sample" type="com.isfasiel.content.sample.service.SampleVO"/>
   
   <insert id="sampleDAO.insert" >
