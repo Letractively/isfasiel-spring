@@ -532,6 +532,7 @@ public class Data {
 		Object[] names = getColumnNameList(0);
 		
 		int size = getHMapList().size();
+		if( size == 0 ) { return "'empty'"; }
 		form.append(" new Array(\n");
 		for(i=0; i < size; i++ ) {
 			form.append("{");

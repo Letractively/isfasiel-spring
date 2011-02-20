@@ -16,9 +16,9 @@
 				,	#dirType#
 			) 
 	</insert>
-	<select id="DirDAO.checkDir" resultClass="int">
+	<select id="DirDAO.checkDir" resultClass="long">
 	<![CDATA[
-		SELECT DIR_ID FROM TN_DIR WHERE PATH = #phyPath#
+		SELECT DIR_ID FROM TN_DIR WHERE PHY_PATH = #phyPath# AND DIR_TYPE = #dirType#
 	]]> 
 	</select>
 	<select id="DirDAO.selectDir" resultClass="hashMap">
@@ -61,7 +61,7 @@
 	<update id="FileDAO.updateMap">
 	<![CDATA[
 		UPDATE TN_CNT_FILE 
-			SET DELETE_YN = 'Y' 
+			SET DEL_YN = 'Y' 
 			WHERE FILE_ID = #fileId# 
 				AND CONTENT_ID = #contentId#
 	]]>
@@ -85,7 +85,7 @@
 	</select>
 	<select id="FileDAO.getFile" resultClass="hashMap">
 	<![CDATA[
-		SELECT B.PATH
+		SELECT B.PHY_PATH
 			, B.DIR_TYPE
 			, A.FILE_NAME
 			, A.FILE_TYPE
@@ -105,7 +105,7 @@
 		UPDATE TN_FILE
 			SET VIEW_COUNT = VIEW_COUNT + 1
 			WHERE
-				DELETE_YN = 'N'
+				DEL_YN = 'N'
 				AND FILE_ID = #fileId#
 	]]>
 	</update>

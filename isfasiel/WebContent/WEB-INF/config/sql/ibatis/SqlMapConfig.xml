@@ -7,6 +7,8 @@
 	<sqlMap resource="com/isfasiel/sql/sample/sample.xml"/>
 	<sqlMap resource="com/isfasiel/sql/base/base_oracle.xml"/>
 	<sqlMap resource="com/isfasiel/sql/file/file_oracle.xml"/>
-	
+	<!-- start content -->
+	<sqlMap resource="com/isfasiel/sql/content/content_oracle.xml"/>
 	<sqlMap resource="com/isfasiel/sql/content/doc/doc_oracle.xml"/>
+	<!-- end content -->
 </sqlMapConfig>

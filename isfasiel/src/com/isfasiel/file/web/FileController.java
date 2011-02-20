@@ -1,32 +1,54 @@
 package com.isfasiel.file.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.isfasiel.base.web.BaseController;
+import com.isfasiel.file.service.DirService;
+import com.isfasiel.file.service.FileService;
 import com.isfasiel.util.data.Data;
+import com.isfasiel.util.file.DateUtil;
+import com.isfasiel.util.file.DirUtil;
 import com.isfasiel.util.file.FileUtil;
+import com.isfasiel.util.file.UploadedFile;
 
 /**
  * @Class Name : FileController.java
  * @Description : 파일 관리 컨트롤러
  * @Modification Information
- * @  수정일      수정자              수정내용
+ * @  수정일	  수정자			  수정내용
  * @ ---------   ---------   -------------------------------
  * @ 2010. 12. 14.	배병선
  * @author 배병선
  */
 @Controller
-public class FileController extends BaseController{
+public class FileController extends BaseController implements HandlerExceptionResolver{
+	
+	
+	@Resource(name="dirService")
+	protected DirService dirService;
+	
 	@Autowired
 	protected FileUtil fileUtil;
+	
+	@Autowired
+	protected DirUtil dirUtil;
+	
+	@Autowired
+	protected DateUtil dateUtil;
 	
 	/**
 	 * @param fileVO
@@ -34,10 +56,11 @@ public class FileController extends BaseController{
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/file/download.do")
-	public void downloadFile(HttpServletResponse response) throws Exception {
+	@RequestMapping(value="/file/download/{fileId}")
+	public void downloadFile(@PathVariable("fileId") Long fileId, HttpServletResponse response) throws Exception {
 		//String realPath = request.getSession().getServletContext().getRealPath("/")+ basePath;
-		Data param = getParam();
+		Data param = new Data();
+		param.add("fileId", fileId);
 		String ids = param.getString("fileId");
 		ids = ids.replaceAll("\r", "");
 		ids = ids.replaceAll("\n", "");
@@ -53,6 +76,82 @@ public class FileController extends BaseController{
 				result.getString("phyName"), 
 				result.getString("fileName"));
 		
+	}
+	
+	/**
+	 * 디렉토리 정보를 생성한다.
+	 * @param realPath
+	 * @return
+	 * @throws Exception
+	 */
+	protected void setDirInfo(String type) throws Exception{
+		Data dir = new Data();
+		if(dirUtil.getDirId() == -1) {
+			dir.add(0, "phyPath", dateUtil.dateToPath());
+			dir.add(0, "dirType", type);
+			dir = dirService.insertDir(getBasePath(), dir);
+			dirUtil.setDirId(dir.getLong(0, "dirId"));
+			dirUtil.setPhyPath(dir.getString(0, "phyPath"));
+			dirUtil.setDirType(dir.getString(0, "dirType"));
+		}
+		dir = null;
+	}
+	
+	/**
+	 * upload files into the server
+	 * @param request
+	 * @param userId
+	 * @param cntId
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/file/upload.do")
+	public String uploadFiles(HttpServletRequest request, Model model) throws Exception {
+		setDirInfo("N");
+		
+		Data files =  fileUtil.uploadFiles(	request, 
+											dirUtil.getDirType() + "/" + dirUtil.getPhyPath(), 
+											dirUtil.getDirId()
+										);
+		
+		int size = files.size();
+		
+		for(int i =0; i < size; i++) {
+			files.add(i, "fileType", "A");
+		}
+		files = fileService.insertFile(files);
+		
+		Data param = new Data();
+		for(int i = 0; i< size; i++) {
+			param.add(i, "fileId", files.getString(i, "fileId"));
+			param.add(i, "fileName", files.getString(i, "fileName"));
+		}
+		files = null;
+		addJavaScript(model, "fileList", param);
+		
+		return "file/upload";
+	}
+	
+	@RequestMapping(value="/file/viewUpload.do") 
+	public String viewUpload(Model model) throws Exception {
+		
+		addJavaScript(model, "fileList", getParam());
+		return "file/upload";
+	}
+	
+	/*** Trap Exceptions during the upload and show errors back in view form ***/
+	public ModelAndView resolveException(HttpServletRequest request,
+			HttpServletResponse response, Object handler, Exception exception)
+	{		
+		Map<Object, Object> model = new HashMap<Object, Object>();
+		if (exception instanceof MaxUploadSizeExceededException)
+		{
+			model.put("errors", exception.getMessage());
+		} else {
+			model.put("errors", "Unexpected error: " + exception.getMessage());
+		}
+		model.put("fileList", "'empty'");
+		model.put("uploadedFile", new UploadedFile());
+		return new ModelAndView("file/upload", (Map)model);
 	}
 
 }

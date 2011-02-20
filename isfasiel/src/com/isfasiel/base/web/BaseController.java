@@ -8,14 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
-import com.isfasiel.file.service.DirService;
 import com.isfasiel.file.service.FileService;
 import com.isfasiel.util.data.Data;
-import com.isfasiel.util.file.DateUtil;
-import com.isfasiel.util.file.DirUtil;
-import com.isfasiel.util.file.FileUtil;
 
 public class BaseController {
+	
+	@Resource(name="fileService")
+	protected FileService fileService;
 	
 	@Autowired
 	protected HttpServletRequest request;
@@ -23,21 +22,7 @@ public class BaseController {
 	@Resource(name="pp.file")
 	protected Properties fileProp;
 	
-	@Autowired
-	protected FileUtil fileUtil;
-	
-	@Autowired
-	protected DateUtil dateUtil;
-	
-	@Autowired
-	protected DirUtil dirUtil;
-	
-	@Resource(name="fileService")
-	protected FileService fileService;
-	
-	@Resource(name="dirService")
-	protected DirService dirService;
-	
+		
 	protected Data getParam() throws Exception{
 		return new Data(request) ;
 	}
@@ -65,48 +50,6 @@ public class BaseController {
 	
 	public String[] getMultiParam(String name, HttpServletRequest request) {
 		return request.getParameterValues(name);
-	}
-	
-	/**
-	 * 디렉토리 정보를 생성한다.
-	 * @param realPath
-	 * @return
-	 * @throws Exception
-	 */
-	protected void setDirInfo(String type) throws Exception{
-		Data dir = new Data();
-		if(dirUtil.getDirId() == -1) {
-			
-			dir.add(0, "phyPath", dateUtil.dateToPath());
-			dir = dirService.insertDir(getBasePath(), dir);
-			dirUtil.setDirId(dir.getLong(0, "dirId"));
-			dirUtil.setPhyName(dir.getString(0, "phyPatn"));
-			dirUtil.setDirType(dir.getString(0, "dirType"));
-		}
-		dir = null;
-	}
-	
-	/**
-	 * upload files into the server
-	 * @param request
-	 * @param userId
-	 * @param cntId
-	 * @throws Exception
-	 */
-	protected Data uploadFiles() throws Exception {
-		Data param = getParam();
-		setDirInfo("N");
-		
-		Data files =  fileUtil.uploadFiles(	request, 
-											dirUtil.getDirType() + "/" + dirUtil.getPhyPath(), 
-											dirUtil.getDirId()
-										);
-		int size = param.size();
-		for(int i =0; i < size; i++) {
-			param.add(i, "fileType", "A");
-		}
-		return fileService.insertFile(files);
-		
 	}
 	
 	/**

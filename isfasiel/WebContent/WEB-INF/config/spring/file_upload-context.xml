@@ -11,7 +11,7 @@
 	<bean id="uploadDirResource"
 		class="org.springframework.core.io.FileSystemResource">
 		<constructor-arg>
-			<value>D:/spring/temp</value>
+			<value>D:/isfasiel/temp</value>
 		</constructor-arg>
 	</bean>
 

@@ -5,25 +5,14 @@
 
 <sqlMap namespace="doc">
 	<typeAlias alias="hashMap" type="java.util.HashMap"/>
-	
-	<insert id="docDAO">
-		INSERT INTO 
-			TN_CONTENT (
-				CONTENT_ID, 
-				TITLE, 
-				USER_IDX,
-				IP_ADDR, 
-				USER_NAME, 
-				USER_ID) 
+	<insert id="docDAO.insert">
+		INSERT INTO TN_DOCUMENT (
+			CONTENT_ID
+			, BODY
+			) 
 			VALUES ( 
 				#contentId#
-				, #title#
-				, #userIdx#
-				, #ipAddr#
-				, #userName#
-				, #userId#
-			)
-	</insert>
-	
-	
+				, #body#
+			);
+	</insert>	
 </sqlMap>

@@ -17,11 +17,12 @@ import com.isfasiel.util.data.Data;
 @Repository("dirDAO")
 public class DirDAO extends BaseDAO {
 	
-	public int insertDir(Data data) throws Exception {
-		Integer dirId = (Integer)getSqlMapClientTemplate().queryForObject("DirDAO.checkDir", data);
+	public long insertDir(Data data) throws Exception {
+		Long dirId = (Long)getSqlMapClientTemplate().queryForObject("DirDAO.checkDir", data.getRecord(0));
 		if( dirId == null) {
+			dirId = getSeq("SEQ_TN_DIR");
+			data.add(0, "dirId", dirId);
 			insert("DirDAO.insertDir", data.getRecord(0));
-			dirId = (Integer)getSqlMapClientTemplate().queryForObject("DirDAO.checkDir", data);
 			return dirId;
 		} else {
 			return dirId;
