@@ -6,7 +6,7 @@
 <sqlMap namespace="base">
 	<select id="baseDAO.newId" resultClass="long" parameterClass="string">
 	<![CDATA[
-		SELECT $seq$.NEXTVAL FROM dual;
+		SELECT $seq$.NEXTVAL FROM dual
 	]]> 
 	</select>
 </sqlMap>

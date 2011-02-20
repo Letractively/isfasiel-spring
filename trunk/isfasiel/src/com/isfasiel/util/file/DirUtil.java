@@ -30,7 +30,7 @@ public class DirUtil {
 		return phyName;
 	}
 
-	public void setPhyName(String phyName) {
+	public void setPhyPath(String phyName) {
 		this.phyName = phyName;
 	}
 

@@ -42,7 +42,7 @@ public class DirImpl implements DirService {
 		}
 		
 		dirUtil.mkDir(realPath + "/" + data.getString("dirType") + "/" + data.getString("phyPath"));
-		data.add("dirId", dirDAO.insertDir(data));
+		data.add(0,"dirId", dirDAO.insertDir(data));
 		return data; 
 	}
 

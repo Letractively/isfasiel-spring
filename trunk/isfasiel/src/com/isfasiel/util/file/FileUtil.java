@@ -100,6 +100,7 @@ public class FileUtil {
 				list.add(index,FILE_PHY_NAME, phyName);
 			}
 			String filePath = properties.getProperty("baseDir").replaceAll("\\\\", "/") + SEPERATOR + path + SEPERATOR + list.getString(index, FILE_PHY_NAME);
+			filePath = filePath.replaceAll("\\\\", "/");
 			if (mFile.getSize() > 0) {
 				mFile.transferTo( new File(filePath) );
 			}
