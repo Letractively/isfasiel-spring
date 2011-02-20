@@ -1,5 +1,6 @@
-#Sun Feb 20 15:43:02 KST 2011
+#Mon Feb 21 00:16:00 KST 2011
 eclipse.preferences.version=1
+encoding//WebContent/common/editor/js/Husky.SE_Basic.js=UTF-8
 encoding//src/com/isfasiel/file/service/FileService.java=UTF-8
 encoding//src/com/isfasiel/file/service/impl/DirDAO.java=UTF-8
 encoding//src/com/isfasiel/file/service/impl/DirImpl.java=UTF-8

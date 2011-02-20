@@ -5,6 +5,7 @@ package com.isfasiel.content.doc.web;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isfasiel.base.web.BaseController;
@@ -19,6 +20,7 @@ import com.isfasiel.util.data.Data;
  * @Date         : 2011. 2. 20. 
  * Description :
  */
+@Controller
 public class DocController extends BaseController {
 	@Resource(name="docService")
 	DocService docService;
@@ -30,5 +32,10 @@ public class DocController extends BaseController {
 		linkFileMap(param, contentId);
 		
 		return "redirect:/doc/list.do";
+	}
+	
+	@RequestMapping(value="/doc/viewInsert.do")
+	public String viewInsertDoc() throws Exception {
+		return "doc/viewInsert";
 	}
 }
