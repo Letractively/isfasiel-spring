@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="file">
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	<insert id="DirDAO.insertDir">
+		INSERT INTO TN_DIR 
+			(	DIR_ID
+				,	PHY_PATH
+				,	DIR_TYPE
+			) VALUES (
+				#dirId#
+				,	#phyPath#
+				,	#dirType#
+			) 
+	</insert>
+	<select id="DirDAO.checkDir" resultClass="int">
+	<![CDATA[
+		SELECT DIR_ID FROM TN_DIR WHERE PATH = #phyPath#
+	]]> 
+	</select>
+	<select id="DirDAO.selectDir" resultClass="hashMap">
+	<![CDATA[
+		SELECT * FROM TN_DIR WHERE DIR_ID = #dirId#
+	]]> 
+	</select>
+	<insert id="FileDAO.insertFile" >
+	<![CDATA[
+		INSERT INTO TN_FILE 
+			(	FILE_ID
+				,	FILE_NAME
+				,	DIR_ID
+				,	FILE_SIZE
+				,	FILE_TYPE
+				,	EXTENTION
+				,	PHY_NAME
+			) VALUES (
+				#fileId#
+				,	#fileName#
+				,	#dirId#
+				,	#fileSize#
+				,	#fileType#
+				,	#extention#
+				,	#phyName#
+			)
+	]]>		
+	</insert>
+	<insert id="FileDAO.insertMap" >
+	<![CDATA[
+		INSERT INTO TN_FILE_MAP
+			(	FILE_ID
+				,	CONTENT_ID
+			) VALUES (
+				#fileId#
+				,	#contentId#
+			)
+	]]>
+	</insert>
+	<update id="FileDAO.updateMap">
+	<![CDATA[
+		UPDATE TN_CNT_FILE 
+			SET DELETE_YN = 'Y' 
+			WHERE FILE_ID = #fileId# 
+				AND CONTENT_ID = #contentId#
+	]]>
+	</update>
+	<select id="FileDAO.getFileId" resultClass="int">
+	<![CDATA[
+		SELECT FILE_ID FROM TN_FILE WHERE PHY_NAME = #phyName#
+	]]> 
+	</select>
+	<select id="FileDAO.getFileLIST" resultClass="hashMap">
+	<![CDATA[
+		SELECT B.FILE_NAME
+				, B.FILE_ID
+			FROM TN_CNT_FILE A
+				, TN_FILE B 
+    		WHERE A.FILE_ID = B.FILE_ID 
+    			AND A.DEL_YN = 'N' 
+    			AND B.DEL_YN = 'N'
+    			AND A.CONTENT_ID = #contentId#
+	]]> 
+	</select>
+	<select id="FileDAO.getFile" resultClass="hashMap">
+	<![CDATA[
+		SELECT B.PATH
+			, B.DIR_TYPE
+			, A.FILE_NAME
+			, A.FILE_TYPE
+			, A.PHY_NAME
+			, A.FILE_ID
+			, A.FILE_SIZE
+			, A.VIEW_COUNT
+			FROM TN_FILE A, TN_DIR B
+			WHERE
+				B.DIR_ID = A.DIR_ID 
+				AND A.DEL_YN = 'N'
+				AND A.FILE_ID = #fileId#
+	]]> 
+	</select>
+	<update id="FileDAO.updateViewCount">
+	<![CDATA[
+		UPDATE TN_FILE
+			SET VIEW_COUNT = VIEW_COUNT + 1
+			WHERE
+				DELETE_YN = 'N'
+				AND FILE_ID = #fileId#
+	]]>
+	</update>
+</sqlMap>

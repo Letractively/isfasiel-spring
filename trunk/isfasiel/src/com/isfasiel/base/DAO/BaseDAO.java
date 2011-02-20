@@ -37,6 +37,7 @@ public class BaseDAO {
 	
 	@Resource(name="baseSqlMapClient")
 	private BaseSqlMapClient baseSqlMapClient;
+
 	
 	protected void addObjectQuery(String query, HashMap<String, Object> param) {
 		addQuery(TYPE_OBJECT, query, param);
@@ -82,18 +83,37 @@ public class BaseDAO {
 		return this.baseSqlMapClient.getSqlMapClientTemplate();
 	}
 	
+	protected Data list(String queryName) {
+		return new Data(this.getSqlMapClientTemplate().queryForList(queryName));
+	}
+	
+	protected Data list(String queryName, Data data) throws Exception{
+		return list(queryName, data.getRecord(0));
+	}
+	
 	protected Data list(String queryName, HashMap<String, Object> param) throws Exception{
 		return new Data(this.getSqlMapClientTemplate().queryForList(queryName, param));
+	}
+	
+	protected Object insert(String queryName, Data data) throws Exception{
+		return insert(queryName, data.getRecord(0));
 	}
 	
 	protected Object insert(String queryName, HashMap<String, Object> param) throws Exception {
 		return this.getSqlMapClientTemplate().insert(queryName, param);
 	}
 	
+	protected int update(String queryName, Data data) throws Exception{
+		return update(queryName, data.getRecord(0));
+	}
+	
 	protected int update(String queryName, HashMap<String, Object> param) throws Exception {
 		return this.getSqlMapClientTemplate().update(queryName, param);
 	}
 	
+	protected int delete(String queryName, Data data) throws Exception{
+		return delete(queryName, data.getRecord(0));
+	}
 	protected int delete(String queryName, HashMap<String, Object> param) throws Exception {
 		return this.getSqlMapClientTemplate().delete(queryName, param);
 	}
@@ -143,5 +163,9 @@ public class BaseDAO {
 				}
 			);
 		return result;
+	}
+	
+	protected Long getSeq(String seqName) throws Exception {
+		return (Long)getSqlMapClientTemplate().queryForObject("baseDAO.newId", seqName);
 	}
 }
