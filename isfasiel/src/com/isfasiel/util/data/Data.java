@@ -167,6 +167,15 @@ public class Data {
 		return getHMapList().get(index);
 	}
 	
+	public List<Object> getListValuesByName(String name) {
+		List<Object> list = new ArrayList<Object>();
+		int size = size();
+		for(int i=0; i < size; i++) {
+			list.add(get(i, name));
+		}
+		return list;
+	}
+	
 	public int getInt(int columnIndex) {
 		return objectUtil.toInt(get(0, columnIndex));
 	}

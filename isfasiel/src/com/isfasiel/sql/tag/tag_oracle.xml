@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap		
+	 PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"		
+	 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="tag">
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	<select id="tagDAO.connSelectByContent" resultClass="hashMap">
+		<![CDATA[
+			SELECT 
+				C.CONTENT_ID
+				, C.TAG_ID
+				, T.TAG_NAME
+				, T.TAG_COUNT
+				, T.STATE 
+			FROM TN_CNT_TAG C, TN_TAG T 
+			WHERE 
+				C.TAG_ID = T.TAG_ID
+				AND C.CONTENT_ID = ?
+		]]>
+	</select>
+	<select id="tagDAO.select">
+		<![CDATA[
+			SELECT * 
+			FROM TN_TAG 
+			WHERE TAG_NAME = #tagName#
+		]]>
+	</select>
+	<select id="tagDAO.tagSelect" parameterClass="java.util.List" resultClass="hashMap">
+		SELECT * 
+		FROM TN_TAG
+		WHERE 
+		1=1 AND
+		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
+			#[]#	
+		</iterate>
+	</select>
+	<insert id="tagDAO.insert">
+		<![CDATA[
+			INSERT INTO TN_TAG (TAG_ID, TAG_NAME, STATE) 
+			VALUES (#tagId#, #tagName#, #state#)
+		]]>
+	</insert>
+	<update id="tagDAO.update">
+		<![CDATA[
+			UPDATE TN_TAG 
+			SET 
+				TAG_NAME = #tagName#, 
+				TAG_COUNT = #tagCount#, 
+				STATE = #state#, 
+			WHERE TAG_ID = #tagId#
+		]]>
+	</update>
+	<update id="tagDAO.countIncrease" parameterClass="java.util.List">
+		UPDATE TN_TAG
+		SET TAG_COUNT = (TAG_COUNT +1) 
+		WHERE 1=1 AND
+		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
+			#[]#	
+		</iterate>
+	</update>
+	<update id="tagDAO.countDecrease" parameterClass="java.util.List">
+		UPDATE TN_TAG
+		SET TAG_COUNT = (TAG_COUNT -1) 
+		WHERE 1 = 1 AND
+		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
+			#[]#	
+		</iterate>
+	</update>
+	<delete id="tagDAO.delete">
+		<![CDATA[
+			DELETE FROM TN_TAG
+			WHERE TAG_ID = ?
+		]]>
+	</delete>
+	<insert id="tagDAO.connInsert">
+		<![CDATA[
+			INSERT INTO TN_CNT_TAG (CONTENT_ID, TAG_ID) 
+			VALUES (#contentId#, #tagId#)
+		]]>
+	</insert>
+	<select id="tagDAO.connSelect" resultClass="hashMap">
+		<![CDATA[
+			SELECT * 
+			FROM TN_CNT_TAG
+			WHERE 
+				CONTENT_ID =#contentId# 
+				AND TAG_ID = #tagId#
+		]]>
+	</select>
+	<select id="tagDAO.connSelectByContent" resultClass="hashMap">
+		<![CDATA[
+			SELECT
+				C.CONTENT_ID
+				, C.TAG_ID
+				, T.TAG_NAME
+				, T.TAG_COUNT
+				, T.STATE
+			FROM TN_CNT_TAG C, TN_TAG T 
+			WHERE 
+				C.TAG_ID = T.TAG_ID 
+				AND C.CONTENT_ID = #contentId#
+		]]>
+	</select>
+	<select id="tagDAO.connSelectByTag" resultClass="hashMap">
+		<![CDATA[
+			SELECT * FROM TN_CNT_TAG WHERE TAG_ID = #tagId#
+		]]>
+	</select>
+	<delete id="connSelectByTag">
+		DELETE FROM TN_CNT_TAG
+		WHERE CONTENT_ID = #contentId# AND 
+		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
+			#[]#
+		</iterate>
+	</delete>	
+</sqlMap>
