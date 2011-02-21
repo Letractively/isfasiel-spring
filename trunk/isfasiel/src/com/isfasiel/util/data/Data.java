@@ -351,6 +351,16 @@ public class Data {
 		}
 	}
 
+	public Object getByKeyCaseIgnore(String keyColumnName, Object key, String targetColumnName) {
+		int index = getRowIndex(keyColumnName, key.toString().toUpperCase());
+		if(index == -1) {
+			return null;
+		} else {
+			return get(index, targetColumnName);
+		}
+		
+	}
+	
 	public void setByKey(String keyColumnName, Object key, String targetColumnName, Object value) {
 		int index = getRowIndex(keyColumnName, key);
 		if(index == -1) {
@@ -358,6 +368,7 @@ public class Data {
 			add(index, targetColumnName, value);
 		}
 	}
+	
 	
 	public int size() {
 		return getHMapList().size();

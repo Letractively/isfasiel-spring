@@ -5,20 +5,7 @@
 
 <sqlMap namespace="tag">
 	<typeAlias alias="hashMap" type="java.util.HashMap"/>
-	<select id="tagDAO.connSelectByContent" resultClass="hashMap">
-		<![CDATA[
-			SELECT 
-				C.CONTENT_ID
-				, C.TAG_ID
-				, T.TAG_NAME
-				, T.TAG_COUNT
-				, T.STATE 
-			FROM TN_CNT_TAG C, TN_TAG T 
-			WHERE 
-				C.TAG_ID = T.TAG_ID
-				AND C.CONTENT_ID = ?
-		]]>
-	</select>
+	
 	<select id="tagDAO.select">
 		<![CDATA[
 			SELECT * 
@@ -37,8 +24,8 @@
 	</select>
 	<insert id="tagDAO.insert">
 		<![CDATA[
-			INSERT INTO TN_TAG (TAG_ID, TAG_NAME, STATE) 
-			VALUES (#tagId#, #tagName#, #state#)
+			INSERT INTO TN_TAG (TAG_ID, TAG_NAME) 
+			VALUES (#tagId#, #tagName#)
 		]]>
 	</insert>
 	<update id="tagDAO.update">
@@ -102,16 +89,22 @@
 				AND C.CONTENT_ID = #contentId#
 		]]>
 	</select>
+
 	<select id="tagDAO.connSelectByTag" resultClass="hashMap">
 		<![CDATA[
 			SELECT * FROM TN_CNT_TAG WHERE TAG_ID = #tagId#
 		]]>
 	</select>
-	<delete id="connSelectByTag">
+	<delete id="tagDAO.connSelectByTag">
 		DELETE FROM TN_CNT_TAG
 		WHERE CONTENT_ID = #contentId# AND 
 		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
 			#[]#
 		</iterate>
-	</delete>	
+	</delete>
+	<delete id="tagDAO.deleteCntTag">
+		DELETE FROM TN_CNT_TAG
+		WHERE CONTENT_ID = #contentId# 
+			AND TAG_ID = #tagId#
+	</delete>
 </sqlMap>
