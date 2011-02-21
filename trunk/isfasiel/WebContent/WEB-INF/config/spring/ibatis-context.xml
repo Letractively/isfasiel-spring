@@ -30,5 +30,4 @@
 	<bean id="baseSqlMapClient" class="com.isfasiel.base.DAO.BaseSqlMapClient">
 		<property name="sqlMapClient" ref="sqlMapClient"></property>
 	</bean>
-	
 </beans>

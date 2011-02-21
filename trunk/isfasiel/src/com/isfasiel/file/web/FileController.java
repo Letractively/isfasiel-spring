@@ -1,8 +1,5 @@
 package com.isfasiel.file.web;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,18 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.isfasiel.base.web.BaseController;
 import com.isfasiel.file.service.DirService;
-import com.isfasiel.file.service.FileService;
 import com.isfasiel.util.data.Data;
 import com.isfasiel.util.file.DateUtil;
 import com.isfasiel.util.file.DirUtil;
 import com.isfasiel.util.file.FileUtil;
-import com.isfasiel.util.file.UploadedFile;
 
 /**
  * @Class Name : FileController.java
@@ -35,7 +26,7 @@ import com.isfasiel.util.file.UploadedFile;
  * @author ¹èº´¼±
  */
 @Controller
-public class FileController extends BaseController implements HandlerExceptionResolver{
+public class FileController extends BaseController {
 	
 	
 	@Resource(name="dirService")
@@ -138,20 +129,5 @@ public class FileController extends BaseController implements HandlerExceptionRe
 		return "file/upload";
 	}
 	
-	/*** Trap Exceptions during the upload and show errors back in view form ***/
-	public ModelAndView resolveException(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception exception)
-	{		
-		Map<Object, Object> model = new HashMap<Object, Object>();
-		if (exception instanceof MaxUploadSizeExceededException)
-		{
-			model.put("errors", exception.getMessage());
-		} else {
-			model.put("errors", "Unexpected error: " + exception.getMessage());
-		}
-		model.put("fileList", "'empty'");
-		model.put("uploadedFile", new UploadedFile());
-		return new ModelAndView("file/upload", (Map)model);
-	}
-
+	
 }
