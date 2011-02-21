@@ -91,15 +91,23 @@ public class FileUtil {
 			
 			list.add(index,FILE_NAME, tmp);
 			list.add(index,FILE_PHY_NAME, getPhysicalFileName());
-			list.add(index,EXTENTION, tmp.substring(tmp.lastIndexOf(".")));
+			if( tmp.lastIndexOf(".") < 0 ) {
+				list.add(index,EXTENTION, "");
+			} else {
+				String ext = tmp.substring(tmp.lastIndexOf(".") + 1);
+				if( ext.length() > 5) {
+					ext = ext.substring(0, 5);
+				}
+				list.add(index,EXTENTION, ext);
+			}
+			
+			
 			list.add(index,FILE_SIZE, mFile.getSize());
 			list.add(index,DIR_ID, dirId);
 
 			if (tmp.lastIndexOf(".") >= 0) {
-				String phyName = list.getString(index, FILE_PHY_NAME) + tmp.substring(tmp.lastIndexOf(".") + 1);
-				if(phyName.length() > 5) {
-					phyName = phyName.substring(0,5);
-				}
+				String phyName = list.getString(index, FILE_PHY_NAME) + tmp.substring(tmp.lastIndexOf("."));
+				
 				list.add(index,FILE_PHY_NAME, phyName);
 			}
 			String filePath = properties.getProperty("baseDir").replaceAll("\\\\", "/") + SEPERATOR + path + SEPERATOR + list.getString(index, FILE_PHY_NAME);
