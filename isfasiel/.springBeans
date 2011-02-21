@@ -9,6 +9,8 @@
 	<configs>
 		<config>WebContent/WEB-INF/config/spring/properties-context.xml</config>
 		<config>WebContent/WEB-INF/config/spring/file_upload-context.xml</config>
+		<config>WebContent/WEB-INF/config/spring/ibatis-context.xml</config>
+		<config>WebContent/WEB-INF/config/spring/transaction-context.xml</config>
 	</configs>
 	<configSets>
 	</configSets>
