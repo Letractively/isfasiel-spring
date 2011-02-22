@@ -11,12 +11,17 @@
 <title>Insert content</title>
 </head>
 <body>
-<form method="post" action="<c:url value="/content/insert.do"/>">
-	<input type="text" name="body" value="test body"/>
-	<input type="text" name="title" value="test title"/>
-	<input type="text" name="userId" value="adm"/>
-	<input type="text" name="userIdx" value="1"/>
-	<input type="text" name="userName" value="adm"/>
+<form method="post" action="<c:url value="/app/content/insert.do"/>">
+	<input type="text" name="body" value="test body"/><br/>
+	<input type="text" name="title" value="test title"/><br/>
+	<input type="text" name="userId" value="adm"/><br/>
+	<input type="text" name="userIdx" value="1"/><br/>
+	<input type="text" name="userName" value="adm"/><br/>
+	<input type="text" name="tagName" value="adm"/><br/>
+	<input type="text" name="tagName" value="test"/><br/>
+	<input type="text" name="tagName" value="user"/><br/>
+	<input type="text" name="ipAddr" value="127.0.0.1"/><br/>
+	<input type="submit" value="gogogo" />
 </form>
 </body>
 </html>

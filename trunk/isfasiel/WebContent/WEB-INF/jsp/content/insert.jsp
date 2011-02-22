@@ -17,6 +17,9 @@
 	<input type="text" name="userId" value="adm"/><br/>
 	<input type="text" name="userIdx" value="1"/><br/>
 	<input type="text" name="userName" value="adm"/><br/>
+	<input type="text" name="tagName" value="adm"/><br/>
+	<input type="text" name="tagName" value="test"/><br/>
+	<input type="text" name="tagName" value="user"/><br/>
 	<input type="text" name="ipAddr" value="127.0.0.1"/><br/>
 	<input type="submit" value="gogogo" />
 </form>

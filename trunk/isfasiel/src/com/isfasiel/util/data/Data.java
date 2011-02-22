@@ -314,7 +314,9 @@ public class Data {
 			Object[] nameList = getColumnNameList();
 			int length = nameList.length;
 			for(int i = 0; i < length; i++) {
-				if(nameList[i].toString().toLowerCase().equals(columnName.toLowerCase())) {
+				String name = nameList[i].toString().toLowerCase();
+				columnName = columnName.toLowerCase();
+				if(name.equals(columnName)) {
 					return map.get(nameList[i]);
 				}
 			}
@@ -572,9 +574,9 @@ public class Data {
 		String name = textList[0].toLowerCase();
 		int length = textList.length;
 		
-		for(int i =1; i < length; i++) {
+		for(int i = 1; i < length; i++) {
 			String text = textList[i];
-			name = name + text.charAt(0) + text.substring(1, text.length()); 
+			name = name + text.charAt(0) + text.substring(1, text.length()).toLowerCase(); 
 		}
 		return name;
 	}

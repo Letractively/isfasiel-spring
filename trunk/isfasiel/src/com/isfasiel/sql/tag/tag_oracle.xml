@@ -6,7 +6,7 @@
 <sqlMap namespace="tag">
 	<typeAlias alias="hashMap" type="java.util.HashMap"/>
 	
-	<select id="tagDAO.select">
+	<select id="tagDAO.select" resultClass="hashMap">
 		<![CDATA[
 			SELECT * 
 			FROM TN_TAG 
@@ -17,8 +17,7 @@
 		SELECT * 
 		FROM TN_TAG
 		WHERE 
-		1=1 AND
-		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
+		<iterate prepend=" TAG_NAME IN " open="(" close=")" conjunction=",">
 			#[]#	
 		</iterate>
 	</select>
@@ -41,16 +40,16 @@
 	<update id="tagDAO.countIncrease" parameterClass="java.util.List">
 		UPDATE TN_TAG
 		SET TAG_COUNT = (TAG_COUNT +1) 
-		WHERE 1=1 AND
-		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
+		WHERE 
+		<iterate prepend=" TAG_ID IN " open="(" close=")" conjunction=",">
 			#[]#	
 		</iterate>
 	</update>
 	<update id="tagDAO.countDecrease" parameterClass="java.util.List">
 		UPDATE TN_TAG
 		SET TAG_COUNT = (TAG_COUNT -1) 
-		WHERE 1 = 1 AND
-		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
+		WHERE 
+		<iterate prepend=" TAG_ID IN " open="(" close=")" conjunction=",">
 			#[]#	
 		</iterate>
 	</update>
@@ -97,7 +96,7 @@
 	</select>
 	<delete id="tagDAO.deleteCntTags">
 		DELETE FROM TN_CNT_TAG
-		WHERE CONTENT_ID = #contentId# AND 
+		WHERE CONTENT_ID = #contentId#  
 		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
 			#tagIds[]#
 		</iterate>

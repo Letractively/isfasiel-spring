@@ -78,7 +78,8 @@ public class Text {
 		String[] changedList = null;
 		List<String> checkedList = new ArrayList<String>();
 		boolean isDuplicated = false;
-		for(int i=1; i < stringList.length; i++) {
+		int length = stringList.length;
+		for(int i=0; i < length; i++) {
 			for(int j=0; j< i; j++) {
 				if( stringList[i].equalsIgnoreCase(stringList[j]) ) {
 					isDuplicated = true;
