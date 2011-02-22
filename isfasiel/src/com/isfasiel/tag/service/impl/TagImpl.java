@@ -11,10 +11,12 @@ public class TagImpl implements TagService {
 	@Resource(name="tagDAO")
 	TagDAO tagDAO;
 	
+	@Override
 	public void updateTag(Long contentId, String[] tagNames) throws Exception{
 		tagDAO.updateTag(contentId, tagNames);
 	}
 	
+	@Override
 	public void deleteTag(Long contentId) throws Exception {
 		tagDAO.delAllCntTags(contentId);
 	}
