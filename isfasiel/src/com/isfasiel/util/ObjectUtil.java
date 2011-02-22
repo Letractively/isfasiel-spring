@@ -1,5 +1,6 @@
 package com.isfasiel.util;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.springframework.stereotype.Component;
@@ -93,6 +94,8 @@ public class ObjectUtil {
 		try {
 			if (value instanceof Long ) {
 				return ((Long)value).longValue();
+			} else if (value instanceof BigDecimal) {
+				return ((BigDecimal)value).longValue();
 			} else if (value instanceof Integer) {
 				return ((Integer)value).longValue();
 			}

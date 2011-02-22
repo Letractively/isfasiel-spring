@@ -83,8 +83,10 @@ public class TagDAO extends BaseDAO {
 	 */
 	public void updateTag(long contentId, String[] tagNames) throws Exception {
 		Data rs = new Data(this.getSqlMapClientTemplate().queryForList("tagDAO.connSelectByContent", contentId));
-		addCntTags(contentId, text.toUnique(tagNames), rs);
-		delCntTags(contentId, text.toUnique(tagNames), rs);
+		tagNames = text.toUnique(tagNames);
+		addCntTags(contentId, tagNames, rs);
+		delCntTags(contentId, tagNames, rs);
+		tagNames = null;
 		rs = null;
 	}
 	
@@ -109,14 +111,21 @@ public class TagDAO extends BaseDAO {
 		
 		if(notAddedTagNames != null) {
 			for(i=0; i<notAddedTagNames.length; i++) {
-				Data tagRs = getTag(notAddedTagNames[i]);
+				
+				Data tagRs = getTag(notAddedTagNames[i].toUpperCase());
+				Long tagId;
+				// If the tag is not existed add the tag into TN_TAG 
 				if(tagRs.size() == 0) {
-					insertTag(notAddedTagNames[i]);
-					tagRs = getTag(notAddedTagNames[i]);
+					tagId = insertTag(notAddedTagNames[i]);
+					tagRs.add(0,"tagId", tagId);
+					//tagRs = getTag(notAddedTagNames[i]);
+				// If the tag is existing get a tagId and add into addedTagIds, after this step the tag counting will be increased.
 				} else {
-					addedTagIds = numberUtil.add(addedTagIds, tagRs.get(i, "tagId"));
+					tagId = tagRs.getLong(0, "tagId");
+					addedTagIds = numberUtil.add(addedTagIds, tagId);
 				}
-				setCntTag(contentId, objectUtil.toLong(tagRs.get(i, "tagId")));
+				setCntTag(contentId, tagRs.getLong(0, "tagId"));
+				tagRs = null;
 			}
 		}
 		if( addedTagIds.length > 0) {
@@ -162,16 +171,16 @@ public class TagDAO extends BaseDAO {
 		return new Data(this.getSqlMapClientTemplate().queryForList("tagDAO.select", tagName));
 	}
 	
-	public boolean insertTag(String tagName) throws Exception {
+	public Long insertTag(String tagName) throws Exception {
 		tagName = tagName.toUpperCase();
 		Long tagId = getSeq("SEQ_TN_TAG");
 		Data param = new Data();
 		param.add(0, "tagId", tagId);
 		param.add(0, "tagName", tagName);
 		
-		Object result = this.getSqlMapClientTemplate().insert("tagDAO.insert", param.getRecord(0));
+		this.getSqlMapClientTemplate().insert("tagDAO.insert", param.getRecord(0));
 		param = null;
-		return result != null ? true : false;
+		return tagId;
 	}
 	
 	public boolean updateTag(long tagId, String tagName, int tagCount, int state) throws Exception {
