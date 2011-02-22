@@ -70,8 +70,8 @@ public class TagDAO extends BaseDAO {
 	/**
 	 * delete all connection between a content and tags
 	 */
-	public void delAllCntTags(long cntNum) throws Exception {
-		updateTag(cntNum, null);
+	public void delAllCntTags(long contentId) throws Exception {
+		updateTag(contentId, null);
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class TagDAO extends BaseDAO {
 		}
 		if(deleteTagNames.length > 0) {
 			setTagCountDec(deletedTagIds);
-			delCntTag(contentId, paramUtil.toNumList(deletedTagIds) );
+			delCntTag(contentId, deletedTagIds );
 		}
 		deleteTagNames = null;
 		deletedTagIds = null;
@@ -149,7 +149,7 @@ public class TagDAO extends BaseDAO {
 		Data param = new Data();
 		param.add(0, "contentId", contentId);
 		param.add(0, "tagId", tagId);
-		Object result = this.getSqlMapClientTemplate().insert("tagDAO.connInsert", param);
+		Object result = this.getSqlMapClientTemplate().insert("tagDAO.connInsert", param.getRecord(0));
 		param = null;
 		return result != null ? true : false;
 	}
@@ -169,7 +169,7 @@ public class TagDAO extends BaseDAO {
 		param.add(0, "tagId", tagId);
 		param.add(0, "tagName", tagName);
 		
-		Object result = this.getSqlMapClientTemplate().insert("tagDAO.insert", param);
+		Object result = this.getSqlMapClientTemplate().insert("tagDAO.insert", param.getRecord(0));
 		param = null;
 		return result != null ? true : false;
 	}
@@ -181,7 +181,7 @@ public class TagDAO extends BaseDAO {
 		param.add(0, "tagCount", tagCount);
 		param.add(0, "state", state);
 		
-		int result = this.getSqlMapClientTemplate().update("tagDAO.update", param);
+		int result = this.getSqlMapClientTemplate().update("tagDAO.update", param.getRecord(0));
 		param = null;
 		return result > 0 ? true : false;
 	}
@@ -236,11 +236,11 @@ public class TagDAO extends BaseDAO {
 		return result > 0 ? true : false;
 	}
 	
-	public boolean delCntTag(long cntNum, String tagNum) throws Exception {
+	public boolean delCntTag(long contentId, long[] tagIds) throws Exception {
 		Data data = new Data();
-		data.add("nums", tagNum);
-		data.add("cntNum", cntNum);
-		int result = this.getSqlMapClientTemplate().delete("tagDAO.connSelectByTag", data);
+		data.add("tagIds", tagIds);
+		data.add("contentId", contentId);
+		int result = this.getSqlMapClientTemplate().delete("tagDAO.deleteCntTag", data.getRecord(0));
 		return result > 0 ? true : false;
 	}
 	
@@ -249,7 +249,7 @@ public class TagDAO extends BaseDAO {
 		Data param = new Data();
 		param.add(0, "contentId", contentId);
 		param.add(0, "tagId", tagId);
-		Data rs = new Data(this.getSqlMapClientTemplate().queryForList("tagDAO.connSelect", param));
+		Data rs = new Data(this.getSqlMapClientTemplate().queryForList("tagDAO.connSelect", param.getRecord(0)));
 		param = null;
 		return rs;
 	}
@@ -257,7 +257,7 @@ public class TagDAO extends BaseDAO {
 	public Data getCntTagByCntId(long contentId) throws Exception{
 		Data param = new Data();
 		param.add(0, "contentId", contentId);
-		Data rs = new Data(this.getSqlMapClientTemplate().queryForList("tagDAO.connSelectByContent", param));
+		Data rs = new Data(this.getSqlMapClientTemplate().queryForList("tagDAO.connSelectByContent", param.getRecord(0)));
 		param = null;
 		return rs;
 	}
@@ -265,7 +265,7 @@ public class TagDAO extends BaseDAO {
 	public Data getCntTagByTagName(long tagId) throws Exception{
 		Data param = new Data();
 		param.add(0, "tagId", tagId);
-		Data rs = new Data(this.getSqlMapClientTemplate().queryForList("tagDAO.connSelectByTag", param));
+		Data rs = new Data(this.getSqlMapClientTemplate().queryForList("tagDAO.connSelectByTag", param.getRecord(0)));
 		param = null;
 		return rs;
 	}
