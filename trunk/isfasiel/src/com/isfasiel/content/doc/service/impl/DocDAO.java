@@ -5,7 +5,7 @@ package com.isfasiel.content.doc.service.impl;
 
 import org.springframework.stereotype.Repository;
 
-import com.isfasiel.base.DAO.content.ContentDAO;
+import com.isfasiel.content.service.impl.ContentDAO;
 import com.isfasiel.util.data.Data;
 
 /**

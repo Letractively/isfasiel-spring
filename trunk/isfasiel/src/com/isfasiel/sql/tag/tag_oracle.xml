@@ -95,11 +95,11 @@
 			SELECT * FROM TN_CNT_TAG WHERE TAG_ID = #tagId#
 		]]>
 	</select>
-	<delete id="tagDAO.connSelectByTag">
+	<delete id="tagDAO.deleteCntTags">
 		DELETE FROM TN_CNT_TAG
 		WHERE CONTENT_ID = #contentId# AND 
 		<iterate prepend=" AND TAG_NAME IN " open="(" close=")" conjunction=",">
-			#[]#
+			#tagIds[]#
 		</iterate>
 	</delete>
 	<delete id="tagDAO.deleteCntTag">
