@@ -19,5 +19,12 @@ public class ContentDAO extends BaseDAO {
 		return contentId;
 	}
 	
+	public void updateContent(Data data) throws Exception {
+		update("contentDAO.update", data);
+	}
+	
+	public void deleteContent(Data data) throws Exception {
+		update("contentDAO.delete", data);
+	}
 	
 }

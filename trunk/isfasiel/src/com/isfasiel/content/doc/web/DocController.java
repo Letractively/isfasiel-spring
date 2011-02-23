@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isfasiel.base.web.BaseController;
-import com.isfasiel.content.doc.service.DocService;
+import com.isfasiel.content.service.ContentService;
 import com.isfasiel.util.data.Data;
 
 /**
@@ -23,14 +23,13 @@ import com.isfasiel.util.data.Data;
 @Controller
 public class DocController extends BaseController {
 	@Resource(name="docService")
-	DocService docService;
+	ContentService docService;
 	
 	@RequestMapping(value="/doc/insert.do")
 	public String insertDoc() throws Exception{
 		Data param = getParam();
 		Long contentId = docService.insert(param);
 		linkFileMap(param, contentId);
-		
 		return "redirect:/doc/list.do";
 	}
 	

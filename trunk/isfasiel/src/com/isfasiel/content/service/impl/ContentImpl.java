@@ -1,15 +1,24 @@
 package com.isfasiel.content.service.impl;
 
-import javax.annotation.Resource;
+import java.util.HashMap;
 
-import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
 
 import com.isfasiel.content.service.ContentService;
 import com.isfasiel.tag.service.impl.TagDAO;
 import com.isfasiel.util.data.Data;
 
-@Service("contentService")
-public class ContentImpl implements ContentService {
+//@Service("contentService")
+
+/**
+ * @author Bae, Byeongseon.
+ * @Project     : isfasiel
+ * @Package     : com.isfasiel.content.service.impl
+ * @FileName  : ContentImpl.java
+ * @Date         : 2011. 2. 24. 
+ * Description : an abstract class for all content
+ */
+public abstract class ContentImpl implements ContentService {
 
 	@Resource(name="tagDAO")
 	protected TagDAO tagDAO;
@@ -17,31 +26,75 @@ public class ContentImpl implements ContentService {
 	@Resource(name="contentDAO")
 	protected ContentDAO contentDAO;
 	
+	/**
+	 * insert a new content
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
-	public Long insertContent(Data data) throws Exception {
-		
-		return contentDAO.insertContent(data);
+	public Long insert(Data data) throws Exception {
+		Long contentId = contentDAO.insertContent(data);
+		data.add(0, "contentId", contentId);
+		insertContent(data);
+		updateTag(data);
+		return contentId;
 	}
 
+	/**
+	 * It is an abstract class to insert a sub content
+	 * @param data
+	 * @throws Exception
+	 */
+	public abstract void insertContent(Data data) throws Exception;
+	
+	/**
+	 * update a new content
+	 * @param data
+	 * @throws Exception
+	 */
 	@Override
-	public Long updateContent(Data data) throws Exception {
-		return null;
+	public void update(Data data) throws Exception {
+		contentDAO.updateContent(data);
+		updateContent(data);
+		updateTag(data);
+	}
+	
+	/**
+	 * It is an abstract class to update a sub content
+	 * @param data
+	 * @throws Exception
+	 */
+	public abstract void updateContent(Data data) throws Exception;
+
+	/**
+	 * delete a content
+	 * @param data
+	 * @throws Exception
+	 */
+	@Override
+	public void delete(Data data) throws Exception{
+		contentDAO.deleteContent(data);
+		deleteTag(data);
 	}
 
+	/**
+	 * It is an abstract class to select a content
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
-	public boolean deleteContent(Data data) throws Exception {
-		return false;
-	}
+	public abstract HashMap<String, Object> select(Data data) throws Exception;
 
+	/**
+	 * It is an abstract class to search a list of contents
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
-	public Data selectContent(Data data) throws Exception {
-		return null;
-	}
-
-	@Override
-	public Data listContent(Data data) throws Exception {
-		return null;
-	}
+	public abstract Data list(Data data) throws Exception ;
 	
 	/**
 	 * update tags of a content
@@ -62,7 +115,7 @@ public class ContentImpl implements ContentService {
 	 * @param data
 	 * @throws Exception
 	 */
-	public void deleteTAg(Data data) throws Exception{
+	public void deleteTag(Data data) throws Exception{
 		tagDAO.delAllCntTags(data.getLong(0, "contentId"));
 	}
 

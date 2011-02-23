@@ -83,6 +83,14 @@ public class BaseDAO {
 		return this.baseSqlMapClient.getSqlMapClientTemplate();
 	}
 	
+	protected HashMap<String, Object> select(String queryName) {
+		return (HashMap<String, Object>)this.getSqlMapClientTemplate().queryForObject(queryName);
+	}
+	
+	protected HashMap<String, Object> select(String queryName, Data data) {
+		return (HashMap<String, Object>)this.getSqlMapClientTemplate().queryForObject(queryName, data.getRecord(0));
+	}
+	
 	protected Data list(String queryName) {
 		return new Data(this.getSqlMapClientTemplate().queryForList(queryName));
 	}
