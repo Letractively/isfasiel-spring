@@ -3,8 +3,11 @@
  */
 package com.isfasiel.content.doc.service.impl;
 
+import java.util.HashMap;
+
 import org.springframework.stereotype.Repository;
 
+import com.isfasiel.base.DAO.BaseDAO;
 import com.isfasiel.content.service.impl.ContentDAO;
 import com.isfasiel.util.data.Data;
 
@@ -17,12 +20,21 @@ import com.isfasiel.util.data.Data;
  * Description :
  */
 @Repository("docDAO")
-public class DocDAO extends ContentDAO {
-	public Long insert(Data data) throws Exception{
-		Long contentId = getContentSeq();
-		data.add("contentId", contentId);
-		insertContent(data);
+public class DocDAO extends BaseDAO {
+	public void insert(Data data) throws Exception{
 		insert("docDAO.insert", data);
-		return contentId;
 	}
+	
+	public void update(Data data) throws Exception {
+		update("docDAO.update", data);
+	}
+	
+	public HashMap<String, Object> select(Data data) throws Exception {
+		return select("docDAO.select", data);
+	}
+	
+	public Data list(Data data) throws Exception {
+		return list("docDAO.list", data);
+	}
+	
 }

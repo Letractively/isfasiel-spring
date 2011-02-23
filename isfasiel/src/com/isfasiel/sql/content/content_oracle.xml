@@ -9,12 +9,16 @@
 	<insert id="contentDAO.insert">
 		INSERT INTO 
 			TN_CONTENT (
-				CONTENT_ID, 
-				TITLE, 
-				USER_IDX,
-				IP_ADDR, 
-				USER_NAME, 
-				USER_ID) 
+				CONTENT_ID 
+				, TITLE
+				, USER_IDX
+				, IP_ADDR 
+				, USER_NAME 
+				, USER_ID
+				<isNotEmpty prepend=", " property="contentType">
+				CONTENT_TYPE
+				</isNotEmpty>
+				) 
 			VALUES ( 
 				#contentId#
 				, #title#
@@ -22,8 +26,39 @@
 				, #ipAddr#
 				, #userName#
 				, #userId#
+				<isNotEmpty prepend=", " property="contentType">
+				, #contentType#
+				</isNotEmpty>
 			)
 	</insert>
 	
+	<update id="contentDAO.delete">
+		UPDATE 
+		SET DEL_YN = 'Y'
+			, UPD_TIME = sysdate
+		WHERE 
+			CONTENT_ID = #contentId# 
+	</update>
 	
+	<update id="contentDAO.update">
+		UPDATE
+			TITLE = #title#
+			, UPD_TIME = sysdate
+			<isNotEmpty prepend=", " property="contentType">
+			CONTENT_TYPE = #contentType#
+			</isNotEmpty>
+		WHERE
+			CONTENT_ID = #contentId#
+	</update>
+	
+	<sql id="contentDAO.preList">
+		SELECT * FROM  (
+			SELECT C.*, ROWNUM RNUM FROM (
+	</sql>
+	<sql id="contentDAO.nextList">
+			) C
+			WHERE ROWNUM &lt;= #lastIndex#
+		)
+		WHERE RNUM &gt;= #firstIndex#
+	</sql>
 </sqlMap>

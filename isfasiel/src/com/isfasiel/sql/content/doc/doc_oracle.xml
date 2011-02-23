@@ -14,5 +14,46 @@
 				#contentId#
 				, #body#
 			);
-	</insert>	
+	</insert>
+	
+	<insert id="docDAO,update">
+		UPDATE TN_BODY 
+		SET BODY = #body#
+		WHERE CONTENT_ID = #contentId#
+	</insert>
+	
+	<sql id="docDAO.preList">
+		SELECT * FROM  (
+			SELECT C.*, ROWNUM RNUM FROM (
+	</sql>
+	<sql id="docDAO.nextList">
+			) C
+			WHERE ROWNUM &lt;= #lastIndex#
+		)
+		WHERE RNUM &gt;= #firstIndex#
+	</sql>
+	
+	<select id="docDAO.list" resultClass="hashMap">
+		<include refid="docDAO.preList"/>
+		SELECT C.*
+		FROM TN_CONTENT C, TN_DOCUMENT D
+		WHERE 
+			D.CONTENT_ID = C.CONTENT_ID
+		<isNotEmpty prepend=" AND " property="title">
+			C.TITLE LIKE '%' || #title# || '%'
+		</isNotEmpty>
+		<isNotEmpty prepend=" AND " property="body">
+			D.BODY '%' || #body# || '%'
+		</isNotEmpty>
+		<include refid="docDAO.nextList"/>
+	</select>
+	
+	<select id="docDAO.select" resultClass="hashMap">
+		SELECT C.*
+			, D.BODY
+		FROM TN_CONTENT C, TN_DOCUMENT D
+		WHERE 
+			D.CONTENT_ID = C.CONTENT_ID
+			AND C.CONTENT_ID = #contentId#
+	</select>
 </sqlMap>
