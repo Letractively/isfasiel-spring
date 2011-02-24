@@ -5,19 +5,19 @@
 --   DB Connect String  : 127.0.0.1:1521/xe 
 --   Schema             : BABO 
 --   Script Created by  : BABO 
---   Script Created at  : 21/02/2011 AM 10:18:07 
+--   Script Created at  : 24/02/2011 AM 11:34:55 
 --   Physical Location  :  
 --   Notes              :  
 --
 
 -- Object Counts: 
 --   Indexes: 16        Columns: 24         
---   Sequences: 3 
---   Tables: 14         Columns: 100        Constraints: 29     
+--   Sequences: 4 
+--   Tables: 14         Columns: 102        Constraints: 29     
 
 
 CREATE SEQUENCE SEQ_TN_CONTENT
-  START WITH 1
+  START WITH 1001
   MAXVALUE 999999999999999999999999999
   MINVALUE 1
   NOCYCLE
@@ -26,7 +26,7 @@ CREATE SEQUENCE SEQ_TN_CONTENT
 
 
 CREATE SEQUENCE SEQ_TN_DIR
-  START WITH 2001
+  START WITH 3001
   MAXVALUE 999999999999999999999999999
   MINVALUE 1
   NOCYCLE
@@ -35,7 +35,16 @@ CREATE SEQUENCE SEQ_TN_DIR
 
 
 CREATE SEQUENCE SEQ_TN_FILE
-  START WITH 1001
+  START WITH 2001
+  MAXVALUE 999999999999999999999999999
+  MINVALUE 1
+  NOCYCLE
+  CACHE 1000
+  NOORDER;
+
+
+CREATE SEQUENCE SEQ_TN_TAG
+  START WITH 1
   MAXVALUE 999999999999999999999999999
   MINVALUE 1
   NOCYCLE
@@ -130,16 +139,17 @@ MONITORING;
 
 CREATE TABLE TN_CONTENT
 (
-  CONTENT_ID  NUMBER(13)                        DEFAULT 0                     NOT NULL,
-  TITLE       VARCHAR2(256 BYTE)                DEFAULT 'NO TITLE'            NOT NULL,
-  USER_IDX    NUMBER(13)                        NOT NULL,
-  IP_ADDR     VARCHAR2(22 BYTE)                 NOT NULL,
-  VIEW_COUNT  NUMBER(10)                        DEFAULT 0                     NOT NULL,
-  REC_COUNT   NUMBER(10)                        DEFAULT 0                     NOT NULL,
-  STATE       NUMBER(1)                         DEFAULT 0                     NOT NULL,
-  DEL_YN      CHAR(1 BYTE)                      DEFAULT 'N'                   NOT NULL,
-  USER_NAME   VARCHAR2(64 BYTE)                 NOT NULL,
-  USER_ID     VARCHAR2(64 BYTE)                 NOT NULL
+  CONTENT_ID    NUMBER(13)                      DEFAULT 0                     NOT NULL,
+  TITLE         VARCHAR2(256 BYTE)              DEFAULT 'NO TITLE'            NOT NULL,
+  USER_IDX      NUMBER(13)                      NOT NULL,
+  IP_ADDR       VARCHAR2(22 BYTE)               NOT NULL,
+  VIEW_COUNT    NUMBER(10)                      DEFAULT 0                     NOT NULL,
+  REC_COUNT     NUMBER(10)                      DEFAULT 0                     NOT NULL,
+  STATE         NUMBER(1)                       DEFAULT 0                     NOT NULL,
+  DEL_YN        CHAR(1 BYTE)                    DEFAULT 'N'                   NOT NULL,
+  USER_NAME     VARCHAR2(64 BYTE)               NOT NULL,
+  USER_ID       VARCHAR2(64 BYTE)               NOT NULL,
+  CONTENT_TYPE  CHAR(1 BYTE)                    DEFAULT 'D'                   NOT NULL
 )
 LOGGING 
 NOCOMPRESS 
@@ -187,7 +197,7 @@ CREATE TABLE TN_FILE
   FILE_SIZE   NUMBER(13)                        DEFAULT 0                     NOT NULL,
   FILE_TYPE   CHAR(1 BYTE)                      DEFAULT 'A'                   NOT NULL,
   VIEW_COUNT  NUMBER(10)                        DEFAULT 0                     NOT NULL,
-  EXTENTION   VARCHAR2(4 BYTE)                  NOT NULL,
+  EXTENTION   VARCHAR2(5 BYTE)                  NOT NULL,
   STATE       NUMBER(1)                         DEFAULT 0                     NOT NULL,
   CRT_TIME    DATE                              DEFAULT sysdate               NOT NULL,
   PHY_NAME    VARCHAR2(64 BYTE)                 NOT NULL,
@@ -254,7 +264,7 @@ CREATE TABLE TN_TAG
   TAG_NAME   VARCHAR2(128 BYTE)                 DEFAULT ''                    NOT NULL,
   TAG_COUNT  NUMBER(10)                         DEFAULT 1                     NOT NULL,
   STATE      NUMBER(1)                          DEFAULT 0                     NOT NULL,
-  DEL_YN     CHAR(1 BYTE)                       DEFAULT 'Y'                   NOT NULL,
+  DEL_YN     CHAR(1 BYTE)                       DEFAULT 'N'                   NOT NULL,
   CRT_TIME   DATE                               DEFAULT sysdate               NOT NULL,
   UPD_TIME   DATE                               DEFAULT sysdate               NOT NULL
 )
@@ -269,12 +279,13 @@ CREATE TABLE TN_USER_INFO
 (
   USER_IDX    NUMBER(13)                        NOT NULL,
   USER_ID     VARCHAR2(64 BYTE)                 NOT NULL,
-  PASSWORD    BLOB                              NOT NULL,
   USER_NAME   VARCHAR2(64 BYTE)                 NOT NULL,
   USER_EMAIL  VARCHAR2(128 BYTE)                NOT NULL,
   USER_ADDR   VARCHAR2(128 BYTE)                NOT NULL,
   PHONE       VARCHAR2(32 BYTE),
-  CRT_TIME    DATE                              DEFAULT sysdate               NOT NULL
+  CRT_TIME    DATE                              DEFAULT sysdate               NOT NULL,
+  USER_ROLE   CHAR(1 BYTE)                      DEFAULT 'U'                   NOT NULL,
+  PASSWORD    VARCHAR2(256 BYTE)                NOT NULL
 )
 LOGGING 
 NOCOMPRESS 
