@@ -1,7 +1,5 @@
 package com.isfasiel.content.doc.service.impl;
 
-import java.util.HashMap;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -26,7 +24,7 @@ public class DocImpl extends ContentImpl {
 	}
 
 	@Override
-	public HashMap<String, Object> select(Data data) throws Exception {
+	public Data selectContent(Data data) throws Exception {
 		return docDAO.select(data);
 	}
 
@@ -34,6 +32,4 @@ public class DocImpl extends ContentImpl {
 	public Data list(Data data) throws Exception {
 		return docDAO.list(data);
 	}
-	
-
 }

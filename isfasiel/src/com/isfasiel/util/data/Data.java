@@ -27,7 +27,7 @@ public class Data {
 	//private Object[] columnNameList = null;
 	private long maxRow;
 	private int pageSize;
-	private int page;
+	private int page =0;
 	
 	public long getMaxRow() {
 		return maxRow;
@@ -407,6 +407,12 @@ public class Data {
 				}
 			}
 		}
+		if( get(0,"page") != null ) {
+			setPage(getInt(0,"page"));
+		}
+		if( get(0,"pageSzie") != null ) {
+			setPageSize(getInt(0,"pageSize"));
+		}
 		
 	}
 	
@@ -432,6 +438,19 @@ public class Data {
 			for( int j =0; j < paramLength; j++) {
 				add(orgSize + i, strColumnNameList[j], record.get(columnNameList[j].toString()));
 			}
+		}
+	}
+	
+	public Data(HashMap<String,Object> map) {
+		if (map == null ) {return;}
+		if(map.isEmpty()){return;}
+		Set<String> set = map.keySet();
+		Object[] columnNameList = set.toArray();
+		int paramLength = columnNameList.length;
+		String name;
+		for( int i =0; i < paramLength; i++ ) {
+			name = toKeyName(columnNameList[i].toString());
+			add(0, name, map.get(columnNameList[i].toString()));
 		}
 	}
 	

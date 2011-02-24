@@ -49,7 +49,7 @@
 	</insert>
 	<insert id="FileDAO.insertMap" >
 	<![CDATA[
-		INSERT INTO TN_FILE_MAP
+		INSERT INTO TN_CNT_FILE
 			(	FILE_ID
 				,	CONTENT_ID
 			) VALUES (

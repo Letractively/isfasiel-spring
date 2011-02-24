@@ -13,7 +13,7 @@
 			VALUES ( 
 				#contentId#
 				, #body#
-			);
+			)
 	</insert>
 	
 	<insert id="docDAO,update">

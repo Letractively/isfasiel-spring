@@ -3,11 +3,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<bean id="pp.file" class="java.util.Properties" >
-	
 		<constructor-arg>
 			<props>
 				<prop key="baseDir">d:/isfasiel/upload</prop>
 				<prop key="mineType">exe,com,jsp,js,html,htm,asp,aspx</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="pp.page" class="java.util.Properties" >
+		<constructor-arg>
+			<props>
+				<prop key="pageSize">30</prop>
+				<prop key="labelSize">10</prop>
+				<prop key="icon">
+<![CDATA[<a href="#"  class="<CSS>" onclick="<ONCLICK>"><DESIGN></a>]]> 
+				</prop>
 			</props>
 		</constructor-arg>
 	</bean>
