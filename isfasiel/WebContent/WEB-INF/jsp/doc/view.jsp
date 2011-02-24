@@ -12,16 +12,20 @@
 </head>
 <body>
 <form method="post" action="<c:url value="/app/content/insert.do"/>">
-	<input type="text" name="body" value="test body"/><br/>
-	<input type="text" name="title" value="test title"/><br/>
-	<input type="text" name="userId" value="adm"/><br/>
-	<input type="text" name="userIdx" value="1"/><br/>
-	<input type="text" name="userName" value="adm"/><br/>
-	<input type="text" name="tagName" value="adm"/><br/>
-	<input type="text" name="tagName" value="test"/><br/>
-	<input type="text" name="tagName" value="user"/><br/>
-	<input type="text" name="ipAddr" value="127.0.0.1"/><br/>
-	<input type="submit" value="gogogo" />
+	id <input type="text" name="contentId" value="${result.contentId}"/><br/>
+	title<input type="text" name="title" value="${result.title}"/><br/>
+	body<br/>
+	${result.body}
+	<c:choose>
+		<c:when test="${tag != null }">
+			<c:forEach var="list" items="${tag}">
+				tag name <input type="text" name="tagName" value="${list.tagName}"/><br/>
+			</c:forEach>		
+		</c:when>
+		<c:otherwise>
+			tag name <input type="text" name="tagName" value=""/><br/>
+		</c:otherwise>
+	</c:choose>
 </form>
 </body>
 </html>

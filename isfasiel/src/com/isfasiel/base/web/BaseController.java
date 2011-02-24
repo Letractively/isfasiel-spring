@@ -37,7 +37,7 @@ public class BaseController {
 	}
 	
 	protected void addTagView(Model model, List<Data> data) {
-		model.addAttribute("result", data.get(0).toList());
+		model.addAttribute("result", data.get(0).getRecord(0));
 		model.addAttribute("tag", data.get(1).toList());
 	}
 	

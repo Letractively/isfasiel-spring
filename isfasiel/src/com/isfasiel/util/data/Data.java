@@ -1,5 +1,6 @@
 package com.isfasiel.util.data;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -11,6 +12,8 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
+
+import oracle.sql.CLOB;
 
 import com.isfasiel.util.ObjectUtil;
 
@@ -492,8 +495,23 @@ public class Data {
 				row.put(getColumnName(target, i), get(target, getColumnName(target, i)));
 			}
 		}
+		if( value instanceof BigDecimal) {
+			row.put(key, ((BigDecimal)value).longValue());
+		} else if( value instanceof CLOB) {
+			
+			try {
+				CLOB cValue = (CLOB)value;
+				int length = (int) cValue.length();
+				String stringValue = new String(cValue.getSubString(1, length) );
+				row.put(key, stringValue);
+				cValue = null;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			row.put(key, value);
+		}
 		
-		row.put(key, value);
 		
 		if(size == 0) {
 			hMapList.add(0, row);
