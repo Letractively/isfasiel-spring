@@ -40,7 +40,7 @@ public class DocController extends ContentController {
 		Long contentId = docService.insert(param);
 		linkFileMap(param, contentId);
 		param = null;
-		return "rediect:/doc/edit/" + contentId;
+		return "redirect:/app/doc/view/" + contentId;
 		//return "redirect:/doc/list.do";
 	}
 	
@@ -53,6 +53,7 @@ public class DocController extends ContentController {
 	public String viewDoc(@PathVariable("contentId") Long contentId, Model model) throws Exception {
 		if(contentId > 0) {
 			Data param = new Data(); 
+			param.add(0,"contentId", contentId);
 			List<Data> result = docService.select(param);
 			addTagView(model, result);
 			model.addAttribute("param", param);
@@ -67,7 +68,7 @@ public class DocController extends ContentController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/update/{contentId}")
+	@RequestMapping(value="/edit/{contentId}")
 	public String viewEdit(@PathVariable("contentId") Long contentId, Model model) throws Exception {
 		if(contentId > 0) {
 			Data param = new Data(); 
@@ -85,13 +86,13 @@ public class DocController extends ContentController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/update.do")
+	@RequestMapping(value="/edit.do")
 	public String updateDoc(Model model) throws Exception {
 		Data param = getParam();
 		docService.update(param);
 		linkFileMap(param);
 		model.addAttribute("param", param);
-		return "redirect:/doc/view/" + param.getString(0, "contentId");
+		return "redirect:/app/doc/view/" + param.getString(0, "contentId");
 	}
 	
 	@RequestMapping(value="/delete.do")
@@ -99,7 +100,7 @@ public class DocController extends ContentController {
 		Data param = getParam();
 		docService.delete(param);
 		model.addAttribute("param", param);
-		return "redirect:/doc/list/" + param.getPage() + "/" + param.getPageSize();
+		return "redirect:/app/doc/list/" + param.getPage() + "/" + param.getPageSize();
 	}
 	
 	@RequestMapping(value="/list/{page}/{pageSize}")
@@ -109,6 +110,7 @@ public class DocController extends ContentController {
 		addList(model, "result", result);
 		addParam(model, param);
 		return "doc/list";
+		//return "redirect:/app/doc/list/" + param.getPage() + "/" + param.getPageSize();
 	}
 	
 	

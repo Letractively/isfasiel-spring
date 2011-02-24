@@ -112,11 +112,18 @@ public abstract class ContentImpl implements ContentService {
 	 */
 	public void updateTag(Data data) throws Exception{
 		int size = data.size();
-		String[] tagNames = new String[size];
+		List<String> tagNames = new ArrayList<String>();
 		for(int i = 0; i < size; i++) {
-			tagNames[i] = data.getString(i, "tagName");
+			Object tagName = data.get(i, "tagName");
+			if( tagName != null) {
+				if(!tagName.toString().equals("")) {
+					tagNames.add(tagName.toString());
+				}
+			}
 		}
-		tagDAO.updateTag(data.getLong(0, "contentId"), tagNames);
+		if( tagNames.size() > 0) {
+			tagDAO.updateTag(data.getLong(0, "contentId"), tagNames.toArray(new String[]{}));
+		}
 	}
 	
 	/**
