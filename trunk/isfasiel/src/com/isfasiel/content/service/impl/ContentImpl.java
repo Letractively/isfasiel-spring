@@ -1,6 +1,8 @@
 package com.isfasiel.content.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -85,7 +87,14 @@ public abstract class ContentImpl implements ContentService {
 	 * @throws Exception
 	 */
 	@Override
-	public abstract HashMap<String, Object> select(Data data) throws Exception;
+	public List<Data> select(Data data) throws Exception{
+		List<Data> result = new ArrayList<Data>();
+		result.add(selectContent(data));
+		result.add(getTags(data));
+		return result;
+	}
+	
+	public abstract Data selectContent(Data data) throws Exception;
 
 	/**
 	 * It is an abstract class to search a list of contents
@@ -94,7 +103,7 @@ public abstract class ContentImpl implements ContentService {
 	 * @throws Exception
 	 */
 	@Override
-	public abstract Data list(Data data) throws Exception ;
+	public abstract Data list(Data data) throws Exception;
 	
 	/**
 	 * update tags of a content
@@ -119,4 +128,8 @@ public abstract class ContentImpl implements ContentService {
 		tagDAO.delAllCntTags(data.getLong(0, "contentId"));
 	}
 
+	public Data getTags(Data data) throws Exception {
+		return tagDAO.getCntTagByCntId(data.getLong(0, "contentId"));
+	}
+	
 }

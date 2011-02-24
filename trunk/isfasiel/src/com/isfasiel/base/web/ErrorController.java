@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.isfasiel.base;
+package com.isfasiel.base.web;
 
 import java.util.HashMap;
 import java.util.Map;

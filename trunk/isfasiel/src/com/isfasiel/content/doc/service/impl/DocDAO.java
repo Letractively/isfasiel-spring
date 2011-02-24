@@ -29,7 +29,7 @@ public class DocDAO extends BaseDAO {
 		update("docDAO.update", data);
 	}
 	
-	public HashMap<String, Object> select(Data data) throws Exception {
+	public Data select(Data data) throws Exception {
 		return select("docDAO.select", data);
 	}
 	

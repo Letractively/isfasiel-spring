@@ -1,6 +1,6 @@
 package com.isfasiel.content.service;
 
-import java.util.HashMap;
+import java.util.List;
 
 import com.isfasiel.util.data.Data;
 
@@ -12,7 +12,7 @@ public interface ContentService {
 	
 	public void delete(Data data) throws Exception;
 	
-	public HashMap<String, Object> select(Data data) throws Exception;
+	public List<Data> select(Data data) throws Exception;
 	
 	public Data list(Data data) throws Exception;
 	
