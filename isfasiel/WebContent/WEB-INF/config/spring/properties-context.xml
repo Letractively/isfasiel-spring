@@ -11,6 +11,14 @@
 		</constructor-arg>
 	</bean>
 	
+	<bean id="pp.security" class="java.util.Properties" >
+		<constructor-arg>
+			<props>
+				<prop key="keyFileName">isfasielKey.key</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+	
 	<bean id="pp.page" class="java.util.Properties" >
 		<constructor-arg>
 			<props>

@@ -108,4 +108,8 @@ public class BaseController {
 		return fileProp.getProperty("baseDir");
 	}
 	
+	protected String getContextPath() {
+		return request.getSession().getServletContext().getRealPath("/");
+	}
+	
 }
