@@ -41,7 +41,8 @@
 	</update>
 	
 	<update id="contentDAO.update">
-		UPDATE
+		UPDATE TN_CONTENT
+		SET
 			TITLE = #title#
 			, UPD_TIME = sysdate
 			<isNotEmpty prepend=", " property="contentType">

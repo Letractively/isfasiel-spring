@@ -71,7 +71,8 @@ public class DocController extends ContentController {
 	@RequestMapping(value="/edit/{contentId}")
 	public String viewEdit(@PathVariable("contentId") Long contentId, Model model) throws Exception {
 		if(contentId > 0) {
-			Data param = new Data(); 
+			Data param = new Data();
+			param.add(0, "contentId", contentId);
 			List<Data> result = docService.select(param);
 			addTagView(model, result);
 			model.addAttribute("param", param);

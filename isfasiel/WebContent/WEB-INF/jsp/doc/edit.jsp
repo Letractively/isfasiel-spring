@@ -28,7 +28,7 @@
 </script>
 </head>
 <body>
-<form method="post" action="<c:url value="/app/doc/insert.do"/>" onsubmit="return doSubmit();">
+<form method="post" action="<c:url value="/app/doc/edit.do"/>" onsubmit="return doSubmit();">
 	id <input type="text" name="contentId" value="${result.contentId}"/><br/>
 	title<input type="text" name="title" value="${result.title}"/><br/>
 <!--	body <input type="text" name="body" value="${result.body}"/><br/>-->
@@ -39,7 +39,7 @@
 	userName <input type="text" name="userName" value="adm"/><br/>
 	<c:choose>
 		<c:when test="${tag != null }">
-			<c:forEach var="list" items="result">
+			<c:forEach var="list" items="${tag}">
 				tag name <input type="text" name="tagName" value="${list.tagName}}"/><br/>
 			</c:forEach>		
 		</c:when>
