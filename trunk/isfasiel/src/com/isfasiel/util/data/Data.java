@@ -167,6 +167,8 @@ public class Data {
 	}
 	
 	public HashMap<String,Object> getRecord(int index) {
+		if( size() < 1) {return null;}
+		if( size() <= index) {return null;}
 		return getHMapList().get(index);
 	}
 	

@@ -16,8 +16,8 @@
 			)
 	</insert>
 	
-	<insert id="docDAO,update">
-		UPDATE TN_BODY 
+	<insert id="docDAO.update">
+		UPDATE TN_DOCUMENT
 		SET BODY = #body#
 		WHERE CONTENT_ID = #contentId#
 	</insert>
