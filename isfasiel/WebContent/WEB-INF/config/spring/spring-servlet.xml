@@ -12,10 +12,28 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
-<!--		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Component"/>-->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Component"/>
 	</context:component-scan>
 	
-	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/**"/>
+			<bean class="com.isfasiel.main.user.web.UserSecurityInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<!--
+	<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="/characters/*/url1" />
+		<mvc:mapping path="/characters/*/url2" />
+		<bean class="interceptor.CharacterInterceptor" />
+	</mvc:interceptor>
+	<mvc:interceptor>
+		<mvc:mapping path="/wikis/*" />
+		<bean class="interceptor.WikiInterceptor" />
+	</mvc:interceptor>
+</mvc:interceptors> 
+	 -->
 
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

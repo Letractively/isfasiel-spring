@@ -28,7 +28,7 @@
 		<property name="configLocation" value="WEB-INF/config/sql/ibatis/SqlMapConfig.xml" />
 	</bean>
 
-	<bean id="baseSqlMapClient" class="com.isfasiel.base.DAO.BaseSqlMapClient">
+	<bean id="baseSqlMapClient" class="com.isfasiel.main.base.dao.BaseSqlMapClient">
 		<property name="sqlMapClient" ref="sqlMapClient"></property>
 	</bean>
 </beans>
