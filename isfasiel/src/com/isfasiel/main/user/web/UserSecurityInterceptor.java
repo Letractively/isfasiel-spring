@@ -12,6 +12,7 @@ public class UserSecurityInterceptor extends HandlerInterceptorAdapter {
 	@Inject
 	private Provider<LoginInfo> loginInfoProvider; 
 
+	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		if (loginInfoProvider.get().isLoggedIn()) {

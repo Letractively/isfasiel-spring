@@ -99,6 +99,7 @@ public class User {
 		this.logins = logins;
 	}
 	
+	@Override
 	public String toString() {
 		return "User [created=" + created + ", id=" + id
 				+ ", logins=" + logins + ", modified=" + modified + ", name="
@@ -106,6 +107,7 @@ public class User {
 				+ ", username=" + username + "]";
 	}
 
+	@Override
 	public int hashCode() {
 		final long prime = 31;
 		long result = 1;
@@ -113,6 +115,7 @@ public class User {
 		return (int)result;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (obj == null) return false;
