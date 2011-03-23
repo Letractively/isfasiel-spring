@@ -3,12 +3,9 @@
  */
 package com.isfasiel.main.content.doc.service.impl;
 
-import java.util.HashMap;
-
 import org.springframework.stereotype.Repository;
 
 import com.isfasiel.main.base.dao.BaseDAO;
-import com.isfasiel.main.content.service.impl.ContentDAO;
 import com.isfasiel.util.data.Data;
 
 /**

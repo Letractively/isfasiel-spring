@@ -1,7 +1,6 @@
 package com.isfasiel.main.content.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
