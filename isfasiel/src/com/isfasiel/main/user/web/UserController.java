@@ -41,9 +41,6 @@ public class UserController extends BaseController {
 	public String insertUser() throws Exception{
 		Data param = getParam();
 		param.add(0,"password", encode(param.getString(0,"pwd")));
-		System.out.println(param.getString(0, "password"));
-		System.out.println(param.getString(0, "pwd"));
-		System.out.println(decode( param.getString(0, "password")) );
 		return "user/join";
 	}
 	
