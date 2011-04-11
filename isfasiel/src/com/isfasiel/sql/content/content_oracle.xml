@@ -13,8 +13,6 @@
 				, TITLE
 				, USER_IDX
 				, IP_ADDR 
-				, USER_NAME 
-				, USER_ID
 				<isNotEmpty prepend=", " property="contentType">
 				CONTENT_TYPE
 				</isNotEmpty>
@@ -24,8 +22,6 @@
 				, #title#
 				, #userIdx#
 				, #ipAddr#
-				, #userName#
-				, #userId#
 				<isNotEmpty prepend=", " property="contentType">
 				, #contentType#
 				</isNotEmpty>

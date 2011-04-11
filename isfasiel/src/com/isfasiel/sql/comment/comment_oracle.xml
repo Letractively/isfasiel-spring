@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="comment">
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	
+	<sql id="commentDAO.preList">
+		SELECT * FROM  (
+			SELECT C.*, ROWNUM RNUM FROM (
+	</sql>
+	<sql id="commentDAO.nextList">
+			) C
+			WHERE ROWNUM &lt;= #lastIndex#
+		)
+		WHERE RNUM &gt;= #firstIndex#
+	</sql>
+	
+	<insert id="commentDAO.insertComment">
+		INSERT INTO TN_COMMENT (
+			COMMENT_ID
+			, USER_IDX
+			, IP_ADDR
+			, BODY) 
+		VALUES ( 
+			#commentId#
+			, #userIdx#
+			, #ipAddr#
+			, #body#
+		)
+	</insert>
+	
+	<insert id="commentDAO.insertMap">
+		INSERT INTO TN_CNT_CMT (
+			CONTENT_ID
+			, COMMENT_ID
+			, PARENT_COMMENT_ID
+		) 
+		VALUES (
+			#contentId# 
+			, #commentId#
+			<isEmpty property="parentCommentId">
+			, #commentId#
+			</isEmpty>
+			<isNotEmpty property="parentCommentId">
+			, #parentCommentId#
+			</isNotEmpty>
+		)
+	</insert>
+	
+	<update id="commentDAO.update">
+		UPDATE TN_COMMENT
+		SET 
+			BODY = #body#
+		WHERE 
+			COMMENT_ID = #commentId#
+	</update>
+	
+	<update id="commentDAO.deleteMap">
+		UPDATE TN_CNT_CMT
+		SET DEL_YN = 'Y'
+		WHERE COMMENT_ID = #commentId#
+	</update>
+	
+	<update id="commentDAO.deleteCmt">
+		UPDATE TN_COMMENT
+		SET DEL_YN = 'Y'
+		WHERE COMMENT_ID = #commentId#
+	</update>
+	
+	<select id="commentDAO.list" resultClass="hashMap">
+		<include refid="commentDAO.preList"/>
+		SELECT 
+			A.COMMENT_ID
+			, A.BODY
+			, B.USER_EMAIL
+			, T.CONTENT_ID
+		FROM TN_COMMENT A, TN_USER_INFO B, TN_CNT_CMT T
+		WHERE
+			B.USER_IDX = A.USER_IDX
+			AND A.COMMENT_ID = T.COMMENT_ID
+			AND T.COMMENT_ID = T.PARENT_COMMENT_ID
+			AND	T.DEL_YN = 'N'
+			AND T.STATE = 0
+			AND T.CONTENT_ID = #contentId#
+		ORDER BY T.COMMENT_ID ASC
+		<include refid="commentDAO.nextList"/>
+	</select>	
+	
+	<select id="commentDAO.subList" resultClass="hashMap">
+		<include refid="commentDAO.preList"/>
+		SELECT 
+			A.COMMENT_ID
+			, A.BODY
+			, B.USER_EMAIL
+			, T.CONTENT_ID
+			, T.PARENT_ID
+		FROM TN_COMMENT A, TN_USER_INFO B, TN_CNT_CMT T
+		WHERE
+			B.USER_IDX = A.USER_IDX
+			AND A.COMMENT_ID = T.COMMENT_ID
+			AND T.COMMENT_ID &gt;&lt; T.PARENT_COMMENT_ID
+			AND	T.DEL_YN = 'N'
+			AND T.STATE = 0
+			AND T.CONTENT_ID = #contentId#
+			AND T.PARENT_COMMENT_ID = #parentId#
+		ORDER BY T.COMMENT_ID DESC 
+		<include refid="commentDAO.nextList"/>
+	</select>
+	
+	
+</sqlMap>

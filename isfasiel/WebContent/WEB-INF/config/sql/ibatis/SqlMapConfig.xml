@@ -10,6 +10,7 @@
 	
 	<sqlMap resource="com/isfasiel/sql/user/user_oracle.xml"/>
 	<sqlMap resource="com/isfasiel/sql/path/path_oracle.xml"/>
+	<sqlMap resource="com/isfasiel/sql/comment/comment_oracle.xml"/>
 	
 	<sqlMap resource="com/isfasiel/sql/tag/tag_oracle.xml"/>
 	
