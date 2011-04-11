@@ -13,6 +13,8 @@ public class ContentController extends BaseController {
 
 	public Data getPageParam(int page, int pageSize) throws Exception{
 		Data param = getParam();
+		param.setPageSize(pageSize);
+		param.setPage(page);
 		param.add(0,"page", page);
 		param.add(0,"pageSize", pageSize);
 		param = pageUtil.getRowSize(param);

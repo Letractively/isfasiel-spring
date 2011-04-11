@@ -95,16 +95,16 @@
 			, A.BODY
 			, B.USER_EMAIL
 			, T.CONTENT_ID
-			, T.PARENT_ID
+			, T.PARENT_COMMENT_ID
 		FROM TN_COMMENT A, TN_USER_INFO B, TN_CNT_CMT T
 		WHERE
 			B.USER_IDX = A.USER_IDX
 			AND A.COMMENT_ID = T.COMMENT_ID
-			AND T.COMMENT_ID &gt;&lt; T.PARENT_COMMENT_ID
+			AND T.COMMENT_ID &lt;&gt; T.PARENT_COMMENT_ID
 			AND	T.DEL_YN = 'N'
 			AND T.STATE = 0
 			AND T.CONTENT_ID = #contentId#
-			AND T.PARENT_COMMENT_ID = #parentId#
+			AND T.PARENT_COMMENT_ID = #parentCommentId#
 		ORDER BY T.COMMENT_ID DESC 
 		<include refid="commentDAO.nextList"/>
 	</select>

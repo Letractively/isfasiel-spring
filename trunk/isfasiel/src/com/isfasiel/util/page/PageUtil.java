@@ -42,11 +42,12 @@ public class PageUtil {
 	}
 	
 	public Data getRowSize(Data param) {
+		int page = param.getPage();
 		int pageSize = param.getPageSize();
 		if( pageSize < 1) {
 			pageSize = getPageSize();
 		}
-		int firstIndex = param.getPage() * pageSize;
+		int firstIndex = page * pageSize;
 		
 		int lastIndex = firstIndex + pageSize -1;
 		param.add(0, "firstIndex", firstIndex);

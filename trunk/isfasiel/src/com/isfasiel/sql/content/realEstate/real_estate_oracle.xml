@@ -64,6 +64,7 @@
 			SUBURB	= #suburb#
 		WHERE
 			CONTENT_ID = #contentId#
+			AND userIdx = #userIdx#
 	</update>
 	
 	<select id="realEstateDAO.select" resultClass="hashMap">
