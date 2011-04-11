@@ -34,6 +34,7 @@
 			, UPD_TIME = sysdate
 		WHERE 
 			CONTENT_ID = #contentId# 
+			AND USER_IDX = #userIdx#
 	</update>
 	
 	<update id="contentDAO.update">

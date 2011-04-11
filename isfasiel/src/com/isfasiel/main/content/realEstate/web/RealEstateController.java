@@ -32,6 +32,27 @@ public class RealEstateController extends ContentController {
 	
 	private String path = "content/xml";
 	
+	@RequestMapping(value="/delete/{contentId}")
+	public String deleteContent(Model model) throws Exception {
+		Data result = new Data();
+		User user = loginInfoProvider.get().currentUser();
+		if(user != null) {
+			try {
+				Data param = getParam();
+				param.add(0, "userIdx", user.getId());
+				realEstateService.delete(param);
+				result.add(0,"result", "OK");
+				
+			} catch (Exception e) {
+				result.add(0,"result", "NO");
+			}
+		} else {
+			result.add(0,"result", "NO");
+		}
+		addXML(model, "result", result, "result");
+		return path;
+	}
+	
 	@RequestMapping(value="/create.do")
 	public String createContent(Model model) throws Exception {
 		Data result = new Data();
@@ -58,13 +79,19 @@ public class RealEstateController extends ContentController {
 	@RequestMapping(value="/update.do") 
 	public String updateContent(Model model) throws Exception {
 		Data result = new Data();
-		try {
-			realEstateService.update(getParam());
-			result.add(0,"result", "OK");
-			
-		} catch (Exception e) {
-			result.add(0,"result", "NO");
+		User user = loginInfoProvider.get().currentUser();
+		if(user != null) {
+			try {
+				Data param = getParam();
+				param.add(0, "userIdx", user.getId());
+				realEstateService.update(param);
+				result.add(0,"result", "OK");
+				
+			} catch (Exception e) {
+				result.add(0,"result", "NO");
+			}
 		}
+		
 		addXML(model, "result", result, "result");
 		return path;
 	}
