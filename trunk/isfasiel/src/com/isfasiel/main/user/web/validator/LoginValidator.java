@@ -25,10 +25,12 @@ public class LoginValidator implements Validator {
 		this.userService = userService;
 	}
 
+	@Override
 	public boolean supports(Class<?> clazz) {
 		return Login.class.isAssignableFrom(clazz);
 	}
 
+	@Override
 	public void validate(Object target, Errors errors) {
 		Login login = (Login)target;
 		User inputUser = new User(login);

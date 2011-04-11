@@ -53,6 +53,10 @@ public class BaseController {
 		model.addAttribute(name, data.toString());
 	}
 	
+	protected void addXML(Model model, String name, Data data, String contentName) {
+		model.addAttribute(name, data.toXMl(contentName));
+	}
+	
 	protected void addJavaScript(Model model, String name, Data data) {
 		model.addAttribute(name, data.toJSArray());
 	}

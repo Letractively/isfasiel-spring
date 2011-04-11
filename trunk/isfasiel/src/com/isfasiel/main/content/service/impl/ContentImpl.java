@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.isfasiel.main.content.service.ContentService;
+import com.isfasiel.main.path.impl.PathDAO;
 import com.isfasiel.main.tag.service.impl.TagDAO;
 import com.isfasiel.util.data.Data;
 
@@ -24,6 +25,9 @@ public abstract class ContentImpl implements ContentService {
 	@Resource(name="tagDAO")
 	protected TagDAO tagDAO;
 	
+	@Resource(name="pathDAO")
+	protected PathDAO pathDAO;
+	
 	@Resource(name="contentDAO")
 	protected ContentDAO contentDAO;
 	
@@ -39,6 +43,7 @@ public abstract class ContentImpl implements ContentService {
 		data.add(0, "contentId", contentId);
 		insertContent(data);
 		updateTag(data);
+		pathDAO.updatePath(data);
 		return contentId;
 	}
 
@@ -59,6 +64,7 @@ public abstract class ContentImpl implements ContentService {
 		contentDAO.updateContent(data);
 		updateContent(data);
 		updateTag(data);
+		pathDAO.updatePath(data);
 	}
 	
 	/**
@@ -77,6 +83,7 @@ public abstract class ContentImpl implements ContentService {
 	public void delete(Data data) throws Exception{
 		contentDAO.deleteContent(data);
 		deleteTag(data);
+		pathDAO.deletePath(data);
 	}
 
 	/**

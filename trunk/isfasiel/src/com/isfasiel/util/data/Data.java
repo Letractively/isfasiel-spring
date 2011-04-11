@@ -439,9 +439,10 @@ public class Data {
 		
 		for(int i =0; i < size; i++) {
 			record = list.get(i);
-			int orgSize = size();
+			//int orgSize = size();
 			for( int j =0; j < paramLength; j++) {
-				add(orgSize + i, strColumnNameList[j], record.get(columnNameList[j].toString()));
+				//add(orgSize + i, strColumnNameList[j], record.get(columnNameList[j].toString()));
+				add(i, strColumnNameList[j], record.get(columnNameList[j].toString()));
 			}
 		}
 	}
@@ -618,5 +619,37 @@ public class Data {
 			name = name + text.charAt(0) + text.substring(1, text.length()).toLowerCase(); 
 		}
 		return name;
+	}
+	
+	public String toXMl(String contentName) {
+		return toXML("ROOT", contentName, true);
+	}
+	
+	public String toXML(String rootName, String contentName) {
+		return toXML(rootName, contentName, true);
+	}
+	
+	public String toXML(String rootName, String contentName, boolean useCDATA) {
+		
+		int row = size();
+		if (row == 0) {return null;} 
+		int column = getHMapList().get(0).size();
+		StringBuilder form = new StringBuilder();
+		Object[] names = getColumnNameList(0);
+		form.append("<" + rootName + ">");
+		for(int i =0; i < row; i++) {
+			form.append("\t<" + contentName + ">");
+			for(int j=0; j < column; j++) {
+				form.append("<" + names[j] + ">");
+				if(useCDATA) {
+					form.append("<![CDATA[" + get(i, names[j].toString()) + "]]>");
+				} else {
+					form.append(names[j]);
+				}
+				form.append("</" + names[j] + ">");
+			}
+		}
+		form.append("</" + rootName + ">");
+		return form.toString();
 	}
 }
