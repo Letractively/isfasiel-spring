@@ -16,7 +16,7 @@
 		WHERE CONTENT_ID = #contentId#
 	</delete>
 	<insert id="pathDAO.insert">
-		INSERT TN_CNT_PATH 
+		INSERT INTO TN_CNT_PATH 
 			(
 				CONTENT_ID
 				, PATH_ID

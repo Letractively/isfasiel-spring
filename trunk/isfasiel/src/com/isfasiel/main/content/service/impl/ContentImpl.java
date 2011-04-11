@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.isfasiel.main.comment.service.impl.CommentDAO;
 import com.isfasiel.main.content.service.ContentService;
 import com.isfasiel.main.path.impl.PathDAO;
 import com.isfasiel.main.tag.service.impl.TagDAO;
@@ -30,6 +31,9 @@ public abstract class ContentImpl implements ContentService {
 	
 	@Resource(name="contentDAO")
 	protected ContentDAO contentDAO;
+	
+	@Resource(name="commentDAO")
+	protected CommentDAO commentDAO;
 	
 	/**
 	 * insert a new content
@@ -97,6 +101,7 @@ public abstract class ContentImpl implements ContentService {
 		List<Data> result = new ArrayList<Data>();
 		result.add(selectContent(data));
 		result.add(getTags(data));
+		result.add(commentDAO.listComment(data));
 		return result;
 	}
 	

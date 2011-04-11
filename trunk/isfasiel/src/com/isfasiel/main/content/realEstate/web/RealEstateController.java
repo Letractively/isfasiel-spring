@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isfasiel.main.content.service.ContentService;
 import com.isfasiel.main.content.web.ContentController;
+import com.isfasiel.main.domain.User;
 import com.isfasiel.main.user.web.LoginInfo;
 import com.isfasiel.util.data.Data;
 
@@ -31,21 +32,30 @@ public class RealEstateController extends ContentController {
 	
 	private String path = "content/xml";
 	
-	@RequestMapping(value="/create")
+	@RequestMapping(value="/create.do")
 	public String createContent(Model model) throws Exception {
 		Data result = new Data();
-		try {
-			realEstateService.insert(getParam());
-			result.add(0,"result", "OK");
+		User user = loginInfoProvider.get().currentUser();
+		if(user != null) {
 			
-		} catch (Exception e) {
+		
+			try {
+				Data param = getParam();
+				param.add(0, "userIdx", user.getId());
+				realEstateService.insert(param);
+				result.add(0,"result", "OK");
+				
+			} catch (Exception e) {
+				result.add(0,"result", "NO");
+			}
+		} else {
 			result.add(0,"result", "NO");
 		}
 		addXML(model, "result", result, "result");
 		return path;
 	}
 	
-	@RequestMapping(value="/update") 
+	@RequestMapping(value="/update.do") 
 	public String updateContent(Model model) throws Exception {
 		Data result = new Data();
 		try {
@@ -70,7 +80,7 @@ public class RealEstateController extends ContentController {
 	}
 	
 	@RequestMapping(value="/view/{contentId}")
-	public String viewContent(@PathVariable("contentId") Long contentId, Model model) throws Exception {
+	public String viewContent(@PathVariable("contentId") long contentId, Model model) throws Exception {
 		Data result = realEstateService.select(getParam()).get(0);
 		addXML(model, "result", result, "content");
 		return path;
