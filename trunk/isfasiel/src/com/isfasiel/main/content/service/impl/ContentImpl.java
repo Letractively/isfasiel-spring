@@ -10,6 +10,7 @@ import com.isfasiel.main.content.service.ContentService;
 import com.isfasiel.main.path.impl.PathDAO;
 import com.isfasiel.main.tag.service.impl.TagDAO;
 import com.isfasiel.util.data.Data;
+import com.isfasiel.util.page.PageUtil;
 
 //@Service("contentService")
 
