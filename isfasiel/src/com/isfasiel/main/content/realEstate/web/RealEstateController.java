@@ -1,5 +1,7 @@
 package com.isfasiel.main.content.realEstate.web;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -106,10 +108,15 @@ public class RealEstateController extends ContentController {
 		return path;
 	}
 	
-	@RequestMapping(value="/view/{contentId}")
-	public String viewContent(@PathVariable("contentId") long contentId, Model model) throws Exception {
-		Data result = realEstateService.select(getParam()).get(0);
-		addXML(model, "result", result, "content");
+	@RequestMapping(value="/view/{contentId}/{page}")
+	public String viewContent(@PathVariable("contentId") long contentId, @PathVariable("page")int page, Model model) throws Exception {
+		Data param = getPageParam(page, 20);
+		param.add(0, "contentId", contentId);
+		List<Data> result = realEstateService.select(param);
+		//result.get(0).add("comment", result.get(2).toXMl("comment"));
+		addXML(model, "result", result.get(0), "content");
+		
+		param = null;
 		return path;
 	}
 	

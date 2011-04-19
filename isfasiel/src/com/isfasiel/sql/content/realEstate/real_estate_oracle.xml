@@ -38,6 +38,29 @@
 					<isNotEmpty property="suburb" close="" open="" prepend="AND"> 
 						 R.SUBURB LIKE '%' || #suburb# || '%'
 					</isNotEmpty>
+					<isNotEmpty property="price" close="" open="" prepend="AND"> 
+						 R.PRICE <![CDATA[<=]]> (#price# + #priceTerm#) AND
+						 R.PRICE <![CDATA[>=]]> (#price# - #priceTerm#)
+					</isNotEmpty>
+					<isNotEmpty property="addr" close="" open="" prepend="AND"> 
+						 R.ADDR LIKE '%' || #addr# || '%'
+					</isNotEmpty>
+					<isNotEmpty property="availableDate" close="" open="" prepend="AND"> 
+						 R.AVAILABLE_DATE = #availableDate#
+					</isNotEmpty>
+					<isNotEmpty property="roomType" close="" open="" prepend="AND"> 
+						 R.ROOM_TYPE = ##
+					</isNotEmpty>
+					<isNotEmpty property="smoking" close="" open="" prepend="AND"> 
+						 R.SMOKING = #smoking# 
+					</isNotEmpty>
+					<isNotEmpty property="pets" close="" open="" prepend="AND"> 
+						 R.PETS = #pets#
+					</isNotEmpty>
+					<isNotEmpty property="gender" close="" open="" prepend="AND"> 
+						 R.GENDER = #gender#
+					</isNotEmpty>
+				ORDER BY C.CONTENT_ID DESC
 			) A WHERE ROWNUM 
 			<![CDATA[<=]]> #lastIndex# ) WHERE RNUM <![CDATA[>=]]> #firstIndex# 
 	</select>
@@ -45,23 +68,45 @@
 		INSERT INTO TN_REAL_ESTATE (
 			CONTENT_ID,
 			BODY,
-			POS_X, 
+			POS_X,
 			POS_Y,
-			SUBURB) 
+			SUBURB,
+			PRICE, 
+			ADDR, 
+			AVAILABLE_DATE, 
+			ROOM_TYPE, 
+			SMOKING, 
+			PETS, 
+			GENDER
+			) 
 		VALUES ( 
 			#contentId#,
 			#body#,
 			#posX#,
 			#posY#,
-			#suburb#
+			#suburb#,
+			#price#,
+			#addr#,
+			#availableDate#,
+			#roomType#,
+			#smoking#,
+			#pets#,
+			#gender#
 		)
 	</insert>
 	<update id="realEstateDAO.update">
 		UPDATE TN_REAL_ESTATE
 		SET	BODY	= #body#,
-			POS_X	= #posX#,
-			POS_Y	= #posY#,
-			SUBURB	= #suburb#
+			SUBURB	= #suburb#,
+			PRICE = #price#, 
+			ADDR = #addr#, 
+			AVAILABLE_DATE = #availableDate#, 
+			ROOM_TYPE = #roomType#, 
+			SMOKING = #smoking#, 
+			PETS = #pets#, 
+			GENDER = #gender#,
+			POS_X = #posX#,
+			POS_Y = #posY#
 		WHERE
 			CONTENT_ID = #contentId#
 			AND userIdx = #userIdx#
@@ -69,15 +114,23 @@
 	
 	<select id="realEstateDAO.select" resultClass="hashMap">
 		SELECT C.*
-			, R.BODY,
+			, R.BODY
 			, R.POS_X
 			, R.POS_Y
 			, R.SUBURB 
+			, R.SUBURB
+			, R.PRICE 
+			, R.ADDR 
+			, R.AVAILABLE_DATE 
+			, R.ROOM_TYPE
+			, R.SMOKING
+			, R.PETS
+			, R.GENDER
 		FROM TN_CONTENT C, TN_REAL_ESTATE R
 		WHERE 
 			R.CONTENT_ID = C.CONTENT_ID
 			AND C.CONTENT_ID = #contentId#
 			AND C.DEL_YN = 'N'
-			AND C.STATE = 
+			AND C.STATE = 0
 	</select>
 </sqlMap>

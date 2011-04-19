@@ -473,7 +473,8 @@ public class Data {
 	}
 	
 	public void add(String key, Object value) {
-		add(hMapList.size(), key, value);
+		//add(hMapList.size(), key, value);
+		add(0, key, value);
 	}
 	
 	public void add(int index, String key, Object value) {
@@ -638,7 +639,7 @@ public class Data {
 		Object[] names = getColumnNameList(0);
 		form.append("<" + rootName + ">");
 		for(int i =0; i < row; i++) {
-			form.append("\t<" + contentName + ">");
+			form.append("<" + contentName + ">");
 			for(int j=0; j < column; j++) {
 				form.append("<" + names[j] + ">");
 				if(useCDATA) {
@@ -648,6 +649,7 @@ public class Data {
 				}
 				form.append("</" + names[j] + ">");
 			}
+			form.append("</" + contentName + ">");
 		}
 		form.append("</" + rootName + ">");
 		return form.toString();
