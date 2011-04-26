@@ -107,7 +107,6 @@ public class RealEstateController extends ContentController {
 		param = null;
 		return path;
 	}
-	
 	@RequestMapping(value="/view/{contentId}/{page}")
 	public String viewContent(@PathVariable("contentId") long contentId, @PathVariable("page")int page, Model model) throws Exception {
 		Data param = getPageParam(page, 20);
@@ -119,10 +118,10 @@ public class RealEstateController extends ContentController {
 		param = null;
 		return path;
 	}
-	
 	@RequestMapping(value="/test")
 	public String test(Model model) throws Exception{
 		model.addAttribute("user", loginInfoProvider.get().currentUser());
 		return "real/test";
 	}
+	
 }

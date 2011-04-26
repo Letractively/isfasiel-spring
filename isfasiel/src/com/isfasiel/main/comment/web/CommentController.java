@@ -30,6 +30,16 @@ public class CommentController extends ContentController {
 		this.loginInfoProvider = loginInfoProvider;
 	}
 	
+	@RequestMapping(value="/list/{contentId}/{pageNumber}")
+	public String getList(@PathVariable long contentId, @PathVariable int pageNumber, Model model) throws Exception {
+		Data param = getPageParam(pageNumber, pageSize);
+		param.add(0,"contentId", contentId);
+		Data result = commentService.list(param);
+		param = null;
+		return path;
+	}
+	
+	
 	@RequestMapping(value="/subList/{contentId}/{commentId}/{pageNumber}")
 	public String getSubList(@PathVariable long contentId, @PathVariable long commentId, @PathVariable int pageNumber, Model model) throws Exception {
 		Data param = getPageParam(pageNumber, pageSize);

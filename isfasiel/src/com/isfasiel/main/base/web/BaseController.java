@@ -115,5 +115,4 @@ public class BaseController {
 	protected String getContextPath() {
 		return request.getSession().getServletContext().getRealPath("/");
 	}
-	
 }
