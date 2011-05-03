@@ -37,7 +37,7 @@ public class UserController extends BaseController {
 	}
 	
 	
-	@RequestMapping(value="/new")
+	@RequestMapping(value="/create.do")
 	public String insertUser() throws Exception{
 		Data param = getParam();
 		param.add(0,"password", encode(param.getString(0,"pwd")));

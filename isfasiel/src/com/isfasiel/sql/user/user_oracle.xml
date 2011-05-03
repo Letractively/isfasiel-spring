@@ -9,7 +9,17 @@
 	<typeAlias alias="user" type="com.isfasiel.main.domain.User"/>
 
 	<insert id="userDAO.createUser" parameterClass="user">
-		INSERT INTO TN_USER_INFO (USER_IDX, USER_EMAIL, PASSWORD) VALUES (#id#, #email#, #password#)
+		INSERT INTO TN_USER_INFO (
+			USER_IDX
+			, USER_EMAIL
+			, PASSWORD
+			, USER_NAME
+		) VALUES (
+			#id# 
+			,	#email# 
+			,	#password#
+			,	#userName#
+		)
 	</insert>
 	<select id="userDAO.findUser" resultClass="user">
 		SELECT USER_IDX AS id, USER_EMAIL, PASSWORD FROM TN_USER_INFO WHERE USER_EMAIL = #email# ORDER BY ID

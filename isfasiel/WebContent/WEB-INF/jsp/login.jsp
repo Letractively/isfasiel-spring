@@ -10,7 +10,7 @@
 <script type="text/javascript">
 	function create() {
 		var form = document.getElementById("tform")
-		form.action = "<c:url value="login/new"/>";
+		form.action = "<c:url value="login/create.do"/>";
 		form.submit();
 	}
 </script>

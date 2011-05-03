@@ -115,4 +115,14 @@ public class BaseController {
 	protected String getContextPath() {
 		return request.getSession().getServletContext().getRealPath("/");
 	}
+	
+	protected String getRemoteIP() {
+		return request.getRemoteAddr();
+	}
+	
+	protected String getRemoteIP(HttpServletRequest request) {
+		return request.getRemoteAddr();
+	}
+	
+	
 }
