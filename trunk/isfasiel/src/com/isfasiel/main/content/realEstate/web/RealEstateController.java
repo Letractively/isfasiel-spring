@@ -64,7 +64,10 @@ public class RealEstateController extends ContentController {
 		
 			try {
 				Data param = getParam();
+				
+				param.add(0, "contentType", "R");
 				param.add(0, "userIdx", user.getId());
+				param.add(0, "ipAddr", getRemoteIP());
 				realEstateService.insert(param);
 				result.add(0,"result", "OK");
 				

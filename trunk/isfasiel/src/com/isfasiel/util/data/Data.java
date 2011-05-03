@@ -499,8 +499,13 @@ public class Data {
 				row.put(getColumnName(target, i), get(target, getColumnName(target, i)));
 			}
 		}
-		if( value instanceof BigDecimal) {
-			row.put(key, ((BigDecimal)value).longValue());
+		if( value instanceof Double ) {
+			row.put(key, ((Double)value).doubleValue());
+		} if( value instanceof Float ) {
+			row.put(key, ((Double)value).floatValue());
+		} else if( value instanceof BigDecimal) {
+			row.put(key, ((BigDecimal)value).doubleValue());
+			row.put(key, value);
 		} else if( value instanceof CLOB) {
 			
 			try {
@@ -651,7 +656,9 @@ public class Data {
 			}
 			form.append("</" + contentName + ">");
 		}
+		System.out.println(toString());
 		form.append("</" + rootName + ">");
+		System.out.println(form.toString());
 		return form.toString();
 	}
 }
