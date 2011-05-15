@@ -68,6 +68,7 @@ public class RealEstateController extends ContentController {
 				param.add(0, "contentType", "R");
 				param.add(0, "userIdx", user.getId());
 				param.add(0, "ipAddr", getRemoteIP());
+				System.out.println(param);
 				realEstateService.insert(param);
 				result.add(0,"result", "OK");
 				
@@ -103,8 +104,9 @@ public class RealEstateController extends ContentController {
 	
 	@RequestMapping(value="/list/{pageNumber}")
 	public String listContent(@PathVariable("pageNumber") int pageNumber, Model model) throws Exception {
-		Data param = getPageParam(pageNumber, pageSize);
 		
+		Data param = getPageParam(pageNumber, pageSize);
+		System.out.println(param);
 		Data result = realEstateService.list(param);
 		addXML(model, "result", result, "content");
 		param = null;
@@ -113,7 +115,9 @@ public class RealEstateController extends ContentController {
 	@RequestMapping(value="/view/{contentId}/{page}")
 	public String viewContent(@PathVariable("contentId") long contentId, @PathVariable("page")int page, Model model) throws Exception {
 		Data param = getPageParam(page, 20);
+		User user = loginInfoProvider.get().currentUser();
 		param.add(0, "contentId", contentId);
+		param.add(0, "userIdx", user.getId());
 		List<Data> result = realEstateService.select(param);
 		//result.get(0).add("comment", result.get(2).toXMl("comment"));
 		addXML(model, "result", result.get(0), "content");

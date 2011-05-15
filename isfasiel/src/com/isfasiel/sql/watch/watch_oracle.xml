@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="watch">
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	
+	<select id="watchDAO.list" resultClass="hashMap">
+		SELECT
+				U.USER_EMAIL
+			,	C.CONTENT_ID
+			,	C.TITLE
+			,	C.CRT_TIME
+			,	C.CONTENT_TYPE
+			,	C.VIEW_COUNT
+		FROM TN_WATCH W, TN_CONTENT C, TN_USER_INFO U
+		WHERE
+				C.CONTENT_ID = W.CONTENT_ID
+			AND	U.USER_IDX = W.USER_IDX
+			AND W.USER_IDX = #userIdx#
+		ORDER BY W.CRT_TIME DESC
+	</select>
+	<insert id="watchDAO.insert">
+		INSERT INTO TN_WATCH (
+			USER_IDX, 
+			CONTENT_ID
+		) VALUES (
+				#userIdx# 
+			,	#contentId#
+		)
+	</insert>
+	<delete id="watchDAO.delete">
+		DELETE FROM TN_WATCH
+		WHERE
+				CONTENT_ID = #contentId#
+			AND	USER_IDX = #userIdx#
+	</delete>
+</sqlMap>

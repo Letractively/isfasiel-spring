@@ -23,7 +23,7 @@
 				, #userIdx#
 				, #ipAddr#
 				<isNotEmpty prepend=", " property="contentType">
-				, #contentType#
+				#contentType#
 				</isNotEmpty>
 			)
 	</insert>
@@ -48,6 +48,14 @@
 		WHERE
 			CONTENT_ID = #contentId#
 	</update>
+	<update id="conetntDAO.addViewCount">
+		UPDATE TN_CONTENT
+		SET 
+			VIEW_COUNT = VIEW_COUNT + 1
+		WHERE
+			CONTENT_ID = #contentId#
+	</update>
+	
 	
 	<sql id="contentDAO.preList">
 		SELECT * FROM  (
