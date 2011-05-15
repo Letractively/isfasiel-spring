@@ -22,10 +22,10 @@
 		)
 	</insert>
 	<select id="userDAO.findUser" resultClass="user">
-		SELECT USER_IDX AS id, USER_EMAIL, PASSWORD FROM TN_USER_INFO WHERE USER_EMAIL = #email# ORDER BY ID
+		SELECT USER_IDX AS id, USER_EMAIL FROM TN_USER_INFO WHERE USER_EMAIL = #email# ORDER BY ID
 	</select>
 	<select id="userDAO.login" resultClass="user">
-		SELECT USER_IDX AS ID, USER_EMAIL, PASSWORD FROM TN_USER_INFO
+		SELECT USER_IDX AS ID, USER_EMAIL FROM TN_USER_INFO
 		WHERE USER_EMAIL = #email# AND PASSWORD = #password#
 	</select>
 </sqlMap>

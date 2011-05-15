@@ -10,16 +10,18 @@
 		SELECT * FROM ( 
 			SELECT A.*, ROWNUM RNUM FROM (
 				SELECT 
-					C.CONTENT_ID, 
-					C.TITLE, 
-					U.USER_EMAIL, 
-					C.VIEW_COUNT, 
-					C.CONTENT_TYPE,
-					(SELECT COUNT(*) 
-						FROM TN_CNT_CMT CM 
-						WHERE	CM.CONTENT_ID = C.CONTENT_ID 
-								AND CM.DEL_YN = 'Y'
-								AND  CM.STATE = 0) AS CMT_COUNT
+					C.CONTENT_ID 
+					,	C.TITLE 
+					,	U.USER_EMAIL 
+					,	C.VIEW_COUNT 
+					,	C.CONTENT_TYPE
+					,	(SELECT COUNT(*) 
+							FROM TN_CNT_CMT CM 
+							WHERE	
+									CM.CONTENT_ID = C.CONTENT_ID 
+								AND	CM.DEL_YN = 'N'
+								AND	CM.STATE = 0)
+						 AS CMT_COUNT
 				FROM TN_CONTENT C, TN_USER_INFO U, TN_REAL_ESTATE R
 				WHERE	R.CONTENT_ID = C.CONTENT_ID
 						AND U.USER_IDX = C.USER_IDX
@@ -49,7 +51,7 @@
 						 R.AVAILABLE_DATE = #availableDate#
 					</isNotEmpty>
 					<isNotEmpty property="roomType" close="" open="" prepend="AND"> 
-						 R.ROOM_TYPE = ##
+						 R.ROOM_TYPE = #roomType#
 					</isNotEmpty>
 					<isNotEmpty property="smoking" close="" open="" prepend="AND"> 
 						 R.SMOKING = #smoking# 
@@ -126,6 +128,7 @@
 			, R.SMOKING
 			, R.PETS
 			, R.GENDER
+			, (SELECT COUNT(*) FROM TN_WATCH W WHERE W.CONTENT_ID = #contentId# AND W.USER_IDX = #userIdx# ) AS IS_WATCHED 
 		FROM TN_CONTENT C, TN_REAL_ESTATE R
 		WHERE 
 			R.CONTENT_ID = C.CONTENT_ID

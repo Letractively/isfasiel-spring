@@ -19,4 +19,6 @@
 	<sqlMap resource="com/isfasiel/sql/content/doc/doc_oracle.xml"/>
 	<sqlMap resource="com/isfasiel/sql/content/realEstate/real_estate_oracle.xml"/>
 	<!-- end content -->
+	
+	<sqlMap resource="com/isfasiel/sql/watch/watch_oracle.xml"/>
 </sqlMapConfig>

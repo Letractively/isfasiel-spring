@@ -61,7 +61,7 @@ public class LoginController extends UserController{
 		}
 	}
 	
-	@RequestMapping(value="/new" ,method=RequestMethod.POST)
+	@RequestMapping(value="/create.do" ,method=RequestMethod.POST)
 	public String create(@ModelAttribute User user, Model model) throws Exception{
 		user.setPassword(encode(user.getPassword()) );
 		User result = userService.createUser(user);

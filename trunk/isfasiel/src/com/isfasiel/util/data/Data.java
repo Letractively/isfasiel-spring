@@ -656,9 +656,7 @@ public class Data {
 			}
 			form.append("</" + contentName + ">");
 		}
-		System.out.println(toString());
 		form.append("</" + rootName + ">");
-		System.out.println(form.toString());
 		return form.toString();
 	}
 }

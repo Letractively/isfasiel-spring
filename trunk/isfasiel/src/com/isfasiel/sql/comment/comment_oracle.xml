@@ -68,14 +68,16 @@
 		SET DEL_YN = 'Y'
 		WHERE COMMENT_ID = #commentId#
 	</update>
-	
+<!--	<include refid="commentDAO.preList"/>-->
+<!--	<include refid="commentDAO.nextList"/>-->
 	<select id="commentDAO.list" resultClass="hashMap">
-		<include refid="commentDAO.preList"/>
+		
 		SELECT 
 			A.COMMENT_ID
 			, A.BODY
 			, B.USER_EMAIL
 			, T.CONTENT_ID
+			, ROWNUM RNUM
 		FROM TN_COMMENT A, TN_USER_INFO B, TN_CNT_CMT T
 		WHERE
 			B.USER_IDX = A.USER_IDX
@@ -85,7 +87,7 @@
 			AND T.STATE = 0
 			AND T.CONTENT_ID = #contentId#
 		ORDER BY T.COMMENT_ID ASC
-		<include refid="commentDAO.nextList"/>
+		
 	</select>	
 	
 	<select id="commentDAO.subList" resultClass="hashMap">

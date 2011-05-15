@@ -35,6 +35,7 @@ public class CommentController extends ContentController {
 		Data param = getPageParam(pageNumber, pageSize);
 		param.add(0,"contentId", contentId);
 		Data result = commentService.list(param);
+		addXML(model, "result", result, "commment");
 		param = null;
 		return path;
 	}
@@ -59,8 +60,10 @@ public class CommentController extends ContentController {
 			try {
 				Data param = getParam();
 				param.add(0, "userIdx", user.getId());
+				param.add(0, "ipAddr", getRemoteIP());
 				commentService.craete(param);
 				result.add(0, "result", "OK");
+				param = null;
 			} catch (Exception e) {
 				e.printStackTrace();
 				result.add(0, "result", "NO");
@@ -68,6 +71,7 @@ public class CommentController extends ContentController {
 		} else {
 			result.add(0, "result", "NO");
 		}
+		addXML(model, "result", result, "comment");
 		return path;
 	}
 	
@@ -81,6 +85,7 @@ public class CommentController extends ContentController {
 				param.add(0, "userIdx", user.getId());
 				commentService.update(param);
 				result.add(0, "result", "OK");
+				param = null;
 			} catch (Exception e) {
 				e.printStackTrace();
 				result.add(0, "result", "NO");
@@ -88,6 +93,7 @@ public class CommentController extends ContentController {
 		} else {
 			result.add(0, "result", "NO");
 		}
+		addXML(model, "result", result, "comment");
 		return path;
 	}
 	
@@ -101,6 +107,7 @@ public class CommentController extends ContentController {
 				param.add(0, "userIdx", user.getId());
 				commentService.delete(param);
 				result.add(0, "result", "OK");
+				param = null;
 			} catch (Exception e) {
 				e.printStackTrace();
 				result.add(0, "result", "NO");
@@ -108,6 +115,7 @@ public class CommentController extends ContentController {
 		} else {
 			result.add(0, "result", "NO");
 		}
+		addXML(model, "result", result, "comment");
 		return path;
 	}
 	

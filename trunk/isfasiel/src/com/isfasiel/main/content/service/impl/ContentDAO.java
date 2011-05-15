@@ -27,4 +27,9 @@ public class ContentDAO extends BaseDAO {
 		update("contentDAO.delete", data);
 	}
 	
+	public void addViewCount(Data data) throws Exception {
+		update("conetntDAO.addViewCount", data);
+	}
+	
+	
 }

@@ -100,10 +100,15 @@ public abstract class ContentImpl implements ContentService {
 	@Override
 	public List<Data> select(Data data) throws Exception{
 		List<Data> result = new ArrayList<Data>();
+		addViewCount(data);
 		result.add(selectContent(data));
 		result.add(getTags(data));
-		result.add(commentDAO.listComment(data));
+		//result.add(commentDAO.listComment(data));
 		return result;
+	}
+	
+	public void addViewCount(Data data) throws Exception {
+		contentDAO.addViewCount(data);
 	}
 	
 	public abstract Data selectContent(Data data) throws Exception;
