@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="groupPath">
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	<select id="groupPathDAO.checkName" resultClass="hashMap">
+		SELECT PATH_ID 
+		FROM TN_PATH P, TN_GROUP_PATH GP 
+		WHERE
+				GP.GROUP_ID = #groupId#
+			AND	P.PATH_NAME = #pathName#
+	</select>
+	<select id="groupPathDAO.list" resultClass="hashMap">
+		SELECT G.GROUP_ID, P.PATH_ID, P.PATH_NAME 
+		FROM
+				TN_GROUP_PATH GP
+			,	TN_PATH P
+		WHERE
+				GP.DEL_YN = 'N'
+			AND P.DEL_YN = 'N'
+			AND	P.PATH_ID = GP.PATH_ID
+			<isNotEmpty prepend=" AND " property="pathName">
+				G.GROUP_NAME = '%' || #pathName# || '%'
+			</isNotEmpty>
+		ORDER BY G.GROUP_ID DESC
+	</select>
+	<update id="groupDAO.delete">
+		UPDATE TN_GROUP_PATH
+		SET DEL_YN = 'Y'
+		WHERE PATH_ID = #pathId#
+			AND	GROUP_ID = #groupId#
+	</update>
+	<insert id="groupDAO.insert">
+		INSERT INTO TN_PATH 
+			(
+				PATH_ID
+				, PATH_NAME
+				, USER_IDX
+				, PATH_ORDER
+			) 
+		VALUES (
+			#pathId#
+			, #pathName#
+			, #userIdx#
+			, #pathOrder#
+		)
+	</insert>
+	<insert id="groupDAO.insertMap">
+		INSERT INTO TN_GROUP_PATH 
+			(
+				GROUP_ID
+				, PATH_ID
+				, USER_IDX
+			) 
+		VALUES (
+			#groupId#
+			, #userIdx#
+			, #userIdx#
+		)
+	</insert>
+</sqlMap>

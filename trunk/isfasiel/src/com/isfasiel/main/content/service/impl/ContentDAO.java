@@ -19,6 +19,10 @@ public class ContentDAO extends BaseDAO {
 		return contentId;
 	}
 	
+	public boolean isOkay(Data data) throws Exception {
+		return !list("contentDAO.isOkay", data).isNull();
+	}
+	
 	public void updateContent(Data data) throws Exception {
 		update("contentDAO.update", data);
 	}

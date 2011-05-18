@@ -31,5 +31,42 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="group.error" class="java.util.Properties" >
+		<constructor-arg>
+			<props>
+				<prop key="LOGIN_ERROR"><![CDATA[LOGIN_ERROR]]></prop>
+				<prop key="DUPLICATED_NAME"><![CDATA[DUPLICATED_NAME]]></prop>
+				<prop key="NO_GROUP_NAME"><![CDATA[NO_GROUP_NAME]]></prop>
+				<prop key="NO_GROUP_ID"><![CDATA[NO_GROUP_ID]]></prop>
+				<prop key="NO_GROUP"><![CDATA[NO_GROUP]]></prop>
+<!--				<prop key=""><![CDATA[]]></prop>-->
+			</props>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="groupPath.error" class="java.util.Properties" >
+		<constructor-arg>
+			<props>
+				<prop key="LOGIN_ERROR"><![CDATA[LOGIN_ERROR]]></prop>
+				<prop key="DUPLICATED_NAME"><![CDATA[DUPLICATED_NAME]]></prop>
+				<prop key="NO_PATH_NAME"><![CDATA[NO_PATH_NAME]]></prop>
+				<prop key="NO_GROUP_ID"><![CDATA[NO_GROUP_ID]]></prop>
+				<prop key="NO_PATH_ID"><![CDATA[NO_PATH_ID]]></prop>
+<!--				<prop key=""><![CDATA[]]></prop>-->
+			</props>
+		</constructor-arg>
+	</bean>
+	<bean id="movie.error" class="java.util.Properties" >
+		<constructor-arg>
+			<props>
+				<prop key="LOGIN_ERROR"><![CDATA[LOGIN_ERROR]]></prop>
+				<prop key="DUPLICATED_NAME"><![CDATA[DUPLICATED_NAME]]></prop>
+				<prop key="NO_PATH_NAME"><![CDATA[NO_PATH_NAME]]></prop>
+				<prop key="NO_GROUP_ID"><![CDATA[NO_GROUP_ID]]></prop>
+				<prop key="NO_PATH_ID"><![CDATA[NO_PATH_ID]]></prop>
+<!--				<prop key=""><![CDATA[]]></prop>-->
+			</props>
+		</constructor-arg>
+	</bean>
 
 </beans>

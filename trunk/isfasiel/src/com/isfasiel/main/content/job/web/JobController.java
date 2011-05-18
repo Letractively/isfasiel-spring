@@ -1,4 +1,4 @@
-package com.isfasiel.main.content.realEstate.web;
+package com.isfasiel.main.content.job.web;
 
 import java.util.List;
 
@@ -15,12 +15,13 @@ import com.isfasiel.main.domain.User;
 import com.isfasiel.util.data.Data;
 
 @Controller
-@RequestMapping(value="/real")
-public class RealEstateController extends ContentController {
+@RequestMapping("/job")
+public class JobController extends ContentController{
+	
 	private int pageSize = 20;
 	
-	@Resource(name="realEstateService")
-	ContentService realEstateService;
+	@Resource(name="jobService")
+	ContentService jobService;
 	
 	private String path = "content/xml";
 	
@@ -32,7 +33,7 @@ public class RealEstateController extends ContentController {
 			try {
 				Data param = getParam();
 				param.add(0, "userIdx", user.getId());
-				realEstateService.delete(param);
+				jobService.delete(param);
 				result.add(0,"result", "OK");
 				
 			} catch (Exception e) {
@@ -55,11 +56,11 @@ public class RealEstateController extends ContentController {
 			try {
 				Data param = getParam();
 				
-				param.add(0, "contentType", "R");
+				param.add(0, "contentType", "J");
 				param.add(0, "userIdx", user.getId());
 				param.add(0, "ipAddr", getRemoteIP());
 				System.out.println(param);
-				realEstateService.insert(param);
+				jobService.insert(param);
 				result.add(0,"result", "OK");
 				
 			} catch (Exception e) {
@@ -80,7 +81,7 @@ public class RealEstateController extends ContentController {
 			try {
 				Data param = getParam();
 				param.add(0, "userIdx", user.getId());
-				realEstateService.update(param);
+				jobService.update(param);
 				result.add(0,"result", "OK");
 				
 			} catch (Exception e) {
@@ -97,7 +98,7 @@ public class RealEstateController extends ContentController {
 		
 		Data param = getPageParam(pageNumber, pageSize);
 		System.out.println(param);
-		Data result = realEstateService.list(param);
+		Data result = jobService.list(param);
 		addXML(model, "result", result, "content");
 		param = null;
 		return path;
@@ -108,17 +109,11 @@ public class RealEstateController extends ContentController {
 		User user = getUser();
 		param.add(0, "contentId", contentId);
 		param.add(0, "userIdx", user.getId());
-		List<Data> result = realEstateService.select(param);
+		List<Data> result = jobService.select(param);
 		//result.get(0).add("comment", result.get(2).toXMl("comment"));
 		addXML(model, "result", result.get(0), "content");
 		
 		param = null;
 		return path;
 	}
-	@RequestMapping(value="/test")
-	public String test(Model model) throws Exception{
-		model.addAttribute("user", getUser());
-		return "real/test";
-	}
-	
 }

@@ -66,10 +66,12 @@ public abstract class ContentImpl implements ContentService {
 	 */
 	@Override
 	public void update(Data data) throws Exception {
-		contentDAO.updateContent(data);
-		updateContent(data);
-		updateTag(data);
-		pathDAO.updatePath(data);
+		if(contentDAO.isOkay(data)) {
+			updateContent(data);
+			updateTag(data);
+			pathDAO.updatePath(data);
+		}
+		
 	}
 	
 	/**

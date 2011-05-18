@@ -37,6 +37,14 @@
 			AND USER_IDX = #userIdx#
 	</update>
 	
+	<select id="contentDAO.isOkay" resultClass="hashMap">
+		SELECT CONTENT_ID 
+		FROM TN_CONTENT
+		WHERE
+			CONTENT_ID = #contentId#
+			AND USER_IDX = #userIdx#
+	</select>
+	
 	<update id="contentDAO.update">
 		UPDATE TN_CONTENT
 		SET
@@ -47,6 +55,7 @@
 			</isNotEmpty>
 		WHERE
 			CONTENT_ID = #contentId#
+			AND USER_IDX = #userIdx#
 	</update>
 	<update id="conetntDAO.addViewCount">
 		UPDATE TN_CONTENT

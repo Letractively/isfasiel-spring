@@ -23,13 +23,6 @@ public class CommentController extends ContentController {
 	@Resource(name="commentService")
 	CommentService commentService;
 	
-	private Provider<LoginInfo> loginInfoProvider;
-
-	@Inject
-	public void setLoginInfoProvider(Provider<LoginInfo> loginInfoProvider) {
-		this.loginInfoProvider = loginInfoProvider;
-	}
-	
 	@RequestMapping(value="/list/{contentId}/{pageNumber}")
 	public String getList(@PathVariable long contentId, @PathVariable int pageNumber, Model model) throws Exception {
 		Data param = getPageParam(pageNumber, pageSize);
@@ -55,7 +48,7 @@ public class CommentController extends ContentController {
 	@RequestMapping(value="/create.do")
 	public String createComment(Model model) throws Exception {
 		Data result = new Data();
-		User user = loginInfoProvider.get().currentUser();
+		User user = getUser();
 		if(user != null) {
 			try {
 				Data param = getParam();
@@ -78,7 +71,7 @@ public class CommentController extends ContentController {
 	@RequestMapping(value="/update.do")
 	public String updateComment(Model model) throws Exception {
 		Data result = new Data();
-		User user = loginInfoProvider.get().currentUser();
+		User user = getUser();
 		if(user != null) {
 			try {
 				Data param = getParam();
@@ -97,10 +90,11 @@ public class CommentController extends ContentController {
 		return path;
 	}
 	
-	@RequestMapping(value="/delete/{commentId}")
+	//@RequestMapping(value="/delete/{commentId}")
+	@RequestMapping(value="/delete.do")
 	public String deleteComment(Model model) throws Exception {
 		Data result = new Data();
-		User user = loginInfoProvider.get().currentUser();
+		User user = getUser();
 		if(user != null) {
 			try {
 				Data param = getParam();
