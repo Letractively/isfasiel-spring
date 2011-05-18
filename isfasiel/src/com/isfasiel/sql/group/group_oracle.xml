@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="group">
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	<sql id="groupDAO.preList">
+		SELECT * FROM  (
+			SELECT C.*, ROWNUM RNUM FROM (
+	</sql>
+	<sql id="groupDAO.nextList">
+			) C
+			WHERE ROWNUM &lt;= #lastIndex#
+		)
+		WHERE RNUM &gt;= #firstIndex#
+	</sql>
+	<select id="groupDAO.checkName" resultClass="hashMap">
+		SELECT GROUP_ID FROM TN_GROUP WHERE GROUP_NAME = #groupName#
+	</select>
+	<select id="groupDAO.list" resultClass="hashMap">
+		<include refid="groupDAO.preList"/>
+			SELECT G.GROUP_ID, G.GROUP_NAME 
+			FROM
+					TN_GROUP G
+				,	TN_USER_GROUP U
+			WHERE
+					G.DEL_YN = 'N'
+				AND	U.DEL_YN = 'N'
+				AND	U.GROUP_ID = G.GROUP_ID
+				<isNotEmpty prepend=" AND " property="groupName">
+					G.GROUP_NAME = '%' || #groupName# || '%'
+				</isNotEmpty>
+			ORDER BY G.GROUP_ID DESC
+		 
+		<include refid="groupDAO.nextList"/>
+	</select>
+	<select id="groupDAO.myList" resultClass="hashMap">
+		<include refid="groupDAO.preList"/>
+			SELECT G.GROUP_ID, G.GROUP_NAME 
+			FROM
+					TN_GROUP G
+				,	TN_USER_GROUP U
+			WHERE
+					G.DEL_YN = 'N'
+				AND	U.DEL_YN = 'N'
+				AND	U.GROUP_ID = G.GROUP_ID
+				AND U.USER_IDX = #userIdx#
+				<isNotEmpty prepend=" AND " property="groupName">
+					G.GROUP_NAME = '%' || #groupName# || '%'
+				</isNotEmpty>
+			ORDER BY G.GROUP_ID DESC
+		 
+		<include refid="groupDAO.nextList"/>
+	</select>
+	
+	<update id="groupDAO.delete">
+		UPDATE TN_GROUP
+		SET DEL_YN = 'Y'
+		WHERE GROUP_ID = #groupId#
+	</update>
+	<insert id="groupDAO.insert">
+		INSERT INTO TN_GROUP 
+			(
+				GROUP_ID
+				, GROUP_NAME
+			) 
+		VALUES (
+			#groupId#
+			, #groupName#
+		)
+	</insert>
+	<insert id="groupDAO.insertMap">
+		INSERT INTO TN_USER_GROUP 
+			(
+				GROUP_ID
+				, USER_IDX
+			) 
+		VALUES (
+			#groupId#
+			, #userIdx#
+		)
+	</insert>
+</sqlMap>

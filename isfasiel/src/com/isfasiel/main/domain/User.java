@@ -1,20 +1,28 @@
 package com.isfasiel.main.domain;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.isfasiel.util.data.Data;
+
 public class User {
-	long id;
+	private long id;
 	
-	String email;
+	private String email;
 	
-	String userName;
+	private String userName;
 	
 	@Size(min=4, max=12)
-	String password;
+	private String password;
 	
 	@NotNull
-	Type type;
+	private Type type;
+	
+	private Data ownList;
+	
+	private Data groupList;
 	
 	public User() {
 	}
@@ -93,6 +101,5 @@ public class User {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
 	
 }

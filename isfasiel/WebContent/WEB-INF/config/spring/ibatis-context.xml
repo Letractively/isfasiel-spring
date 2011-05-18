@@ -25,7 +25,9 @@
 	</bean>
 	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="WEB-INF/config/sql/ibatis/SqlMapConfig.xml" />
+		<property name="configLocation" value="/WEB-INF/classes/com/isfasiel/sql/SqlMapConfig.xml" />
+		<!--		<property name="configLocation" value="WEB-INF/config/sql/ibatis/SqlMapConfig.xml" />-->
+		
 	</bean>
 
 	<bean id="baseSqlMapClient" class="com.isfasiel.main.base.dao.BaseSqlMapClient">

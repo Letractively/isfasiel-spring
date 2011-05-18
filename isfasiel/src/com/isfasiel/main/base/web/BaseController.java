@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.isfasiel.main.domain.User;
 import com.isfasiel.main.file.service.FileService;
+import com.isfasiel.main.user.web.LoginInfo;
 import com.isfasiel.util.data.Data;
 
 public class BaseController {
@@ -23,6 +27,28 @@ public class BaseController {
 	@Resource(name="pp.file")
 	protected Properties fileProp;
 	
+	private Provider<LoginInfo> loginInfoProvider;
+
+	private String basePath = "content/xml";
+	
+	@Inject
+	public void setLoginInfoProvider(Provider<LoginInfo> loginInfoProvider) {
+		this.loginInfoProvider = loginInfoProvider;
+	}
+	
+	protected User getUser() {
+		return loginInfoProvider.get().currentUser();
+	}
+	
+	protected boolean isLogin() {
+		User user = loginInfoProvider.get().currentUser();
+		if(user == null) {
+			return false;
+		} else {
+			user = null;
+			return true;
+		}
+	}
 		
 	protected Data getParam() throws Exception{
 		return new Data(request) ;
@@ -124,5 +150,18 @@ public class BaseController {
 		return request.getRemoteAddr();
 	}
 	
+	protected String returnErrorMsg(Model model, String msg) {
+		Data result = new Data();
+		result.add(0, "result", msg);
+		addXML(model, "result", result, "msg");
+		return basePath;
+	}
+	
+	protected String returnOkMsg(Model model) {
+		Data result = new Data();
+		result.add(0, "result", "OK");
+		addXML(model, "result", result, "msg");
+		return basePath;
+	}
 	
 }

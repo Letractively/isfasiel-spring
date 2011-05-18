@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="movie">
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	
+	<select id="movieDAO.list" resultClass="hashMap">
+		SELECT * FROM ( 
+			SELECT A.*, ROWNUM RNUM FROM (
+				SELECT 
+					C.CONTENT_ID 
+					,	C.TITLE 
+					,	U.USER_EMAIL 
+					,	C.VIEW_COUNT 
+					,	C.CONTENT_TYPE
+					,	(SELECT COUNT(*) 
+							FROM TN_CNT_CMT CM 
+							WHERE	
+									CM.CONTENT_ID = C.CONTENT_ID 
+								AND	CM.DEL_YN = 'N'
+								AND	CM.STATE = 0)
+						 AS CMT_COUNT
+				FROM TN_CONTENT C, TN_USER_INFO U, TN_MOVIE M
+				WHERE	M.CONTENT_ID = C.CONTENT_ID
+						AND U.USER_IDX = C.USER_IDX
+					<isNotEmpty property="title" close="" open="" prepend="AND"> 
+						TITLE LIKE '%' || #title# || '%' 
+					</isNotEmpty>
+					<isNotEmpty property="userEmail" close="" open="" prepend="AND"> 
+						U.USER_EMAIL LIKE '%' || #userEmail# || '%' 
+					</isNotEmpty>
+				ORDER BY C.CONTENT_ID DESC
+			) A WHERE ROWNUM 
+			<![CDATA[<=]]> #lastIndex# ) WHERE RNUM <![CDATA[>=]]> #firstIndex# 
+	</select>
+	<insert id="movieDAO.insert">
+		INSERT INTO TN_MOVIE (
+			CONTENT_ID,
+			BODY,
+			) 
+		VALUES ( 
+			#contentId#,
+			#body#,
+		)
+	</insert>
+	<update id="realEstateDAO.update">
+		UPDATE TN_REAL_ESTATE
+		SET	BODY	= #body#,
+		WHERE
+			CONTENT_ID = #contentId#
+	</update>
+	
+	<select id="realEstateDAO.select" resultClass="hashMap">
+		SELECT C.*
+			, R.BODY
+		FROM TN_CONTENT C, TN_MOVIE M
+		WHERE 
+			M.CONTENT_ID = C.CONTENT_ID
+			AND C.CONTENT_ID = #contentId#
+			AND C.DEL_YN = 'N'
+			AND C.STATE = 0
+	</select>
+</sqlMap>

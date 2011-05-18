@@ -19,7 +19,7 @@ public class UserSecurityInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		}
 		else {
-			response.sendRedirect(request.getContextPath() + "/user/accessdenied");
+			response.sendRedirect(request.getContextPath() + "/login/accessdenied");
 			return false;
 		}
 	}
