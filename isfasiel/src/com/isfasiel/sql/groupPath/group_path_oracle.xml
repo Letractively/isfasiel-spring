@@ -6,14 +6,14 @@
 <sqlMap namespace="groupPath">
 	<typeAlias alias="hashMap" type="java.util.HashMap"/>
 	<select id="groupPathDAO.checkName" resultClass="hashMap">
-		SELECT PATH_ID 
+		SELECT P.PATH_ID 
 		FROM TN_PATH P, TN_GROUP_PATH GP 
 		WHERE
 				GP.GROUP_ID = #groupId#
 			AND	P.PATH_NAME = #pathName#
 	</select>
 	<select id="groupPathDAO.list" resultClass="hashMap">
-		SELECT G.GROUP_ID, P.PATH_ID, P.PATH_NAME 
+		SELECT GP.GROUP_ID, P.PATH_ID, P.PATH_NAME 
 		FROM
 				TN_GROUP_PATH GP
 			,	TN_PATH P
@@ -21,18 +21,19 @@
 				GP.DEL_YN = 'N'
 			AND P.DEL_YN = 'N'
 			AND	P.PATH_ID = GP.PATH_ID
+			AND	GP.GROUP_ID = #groupId#
 			<isNotEmpty prepend=" AND " property="pathName">
-				G.GROUP_NAME = '%' || #pathName# || '%'
+				P.PATH_NAME LIKE '%' || #pathName# || '%'
 			</isNotEmpty>
-		ORDER BY G.GROUP_ID DESC
+		ORDER BY P.PATH_ID DESC
 	</select>
-	<update id="groupDAO.delete">
+	<update id="groupPathDAO.delete">
 		UPDATE TN_GROUP_PATH
 		SET DEL_YN = 'Y'
 		WHERE PATH_ID = #pathId#
 			AND	GROUP_ID = #groupId#
 	</update>
-	<insert id="groupDAO.insert">
+	<insert id="groupPathDAO.insert">
 		INSERT INTO TN_PATH 
 			(
 				PATH_ID
@@ -44,10 +45,15 @@
 			#pathId#
 			, #pathName#
 			, #userIdx#
+			<isNotEmpty property="pathOrder">
 			, #pathOrder#
+			</isNotEmpty>
+			<isEmpty property="pathOrder">
+			, 0
+			</isEmpty>
 		)
 	</insert>
-	<insert id="groupDAO.insertMap">
+	<insert id="groupPathDAO.insertMap">
 		INSERT INTO TN_GROUP_PATH 
 			(
 				GROUP_ID
@@ -56,7 +62,7 @@
 			) 
 		VALUES (
 			#groupId#
-			, #userIdx#
+			, #pathId#
 			, #userIdx#
 		)
 	</insert>

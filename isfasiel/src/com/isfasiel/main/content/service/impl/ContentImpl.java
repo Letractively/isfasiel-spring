@@ -7,10 +7,10 @@ import javax.annotation.Resource;
 
 import com.isfasiel.main.comment.service.impl.CommentDAO;
 import com.isfasiel.main.content.service.ContentService;
+import com.isfasiel.main.file.service.impl.FileDAO;
 import com.isfasiel.main.path.impl.PathDAO;
 import com.isfasiel.main.tag.service.impl.TagDAO;
 import com.isfasiel.util.data.Data;
-import com.isfasiel.util.page.PageUtil;
 
 //@Service("contentService")
 
@@ -35,6 +35,9 @@ public abstract class ContentImpl implements ContentService {
 	
 	@Resource(name="commentDAO")
 	protected CommentDAO commentDAO;
+	
+	@Resource(name="fileDAO")
+	protected FileDAO fileDAO;
 	
 	/**
 	 * insert a new content
@@ -67,6 +70,7 @@ public abstract class ContentImpl implements ContentService {
 	@Override
 	public void update(Data data) throws Exception {
 		if(contentDAO.isOkay(data)) {
+			contentDAO.updateContent(data);
 			updateContent(data);
 			updateTag(data);
 			pathDAO.updatePath(data);
@@ -105,7 +109,8 @@ public abstract class ContentImpl implements ContentService {
 		addViewCount(data);
 		result.add(selectContent(data));
 		result.add(getTags(data));
-		//result.add(commentDAO.listComment(data));
+		result.add(getFiles(data));
+		result.add(commentDAO.listComment(data));
 		return result;
 	}
 	
@@ -156,6 +161,10 @@ public abstract class ContentImpl implements ContentService {
 
 	public Data getTags(Data data) throws Exception {
 		return tagDAO.getCntTagByCntId(data.getLong(0, "contentId"));
+	}
+	
+	public Data getFiles(Data data) throws Exception {
+		return fileDAO.getFileList(data);
 	}
 	
 }

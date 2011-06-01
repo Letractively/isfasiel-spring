@@ -25,13 +25,14 @@ public class RealEstateController extends ContentController {
 	private String path = "content/xml";
 	
 	@RequestMapping(value="/delete/{contentId}")
-	public String deleteContent(Model model) throws Exception {
+	public String deleteContent(Model model, @PathVariable long contentId) throws Exception {
 		Data result = new Data();
 		User user = getUser();
 		if(user != null) {
 			try {
 				Data param = getParam();
 				param.add(0, "userIdx", user.getId());
+				param.add(0, "contentId", contentId);
 				realEstateService.delete(param);
 				result.add(0,"result", "OK");
 				
@@ -74,11 +75,14 @@ public class RealEstateController extends ContentController {
 	
 	@RequestMapping(value="/update.do") 
 	public String updateContent(Model model) throws Exception {
+		
 		Data result = new Data();
 		User user = getUser();
 		if(user != null) {
 			try {
 				Data param = getParam();
+				System.out.println(param);
+				
 				param.add(0, "userIdx", user.getId());
 				realEstateService.update(param);
 				result.add(0,"result", "OK");

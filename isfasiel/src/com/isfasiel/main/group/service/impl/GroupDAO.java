@@ -17,7 +17,7 @@ public class GroupDAO extends BaseDAO {
 	
 	
 	public Object insert(Data data) throws Exception {
-		if( list("groupDAO.checkName", data).isNull() ) {
+		if( !list("groupDAO.checkName", data).isNull() ) {
 			return groupProp.getProperty("DUPLICATED_NAME");
 		}
 		long groupId = getSeq("SEQ_TN_GROUP");

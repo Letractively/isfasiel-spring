@@ -45,7 +45,9 @@ public class LoginController extends UserController{
 		return "login";
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
+	//RequestMapping(value="login.do", method=RequestMethod.POST)
+	//RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(value="login.do")
 	public String login(@ModelAttribute @Valid Login login, BindingResult result, Model model /*, SessionStatus status */) throws Exception {
 		if (result.hasErrors()) return "login";
 		login.setPassword(encode(login.getPassword()) );

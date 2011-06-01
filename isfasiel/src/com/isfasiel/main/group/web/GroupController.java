@@ -45,8 +45,12 @@ public class GroupController extends ContentController {
 		User user= getUser();
 		param.add(0, "userIdx", user.getId());
 		
-		groupService.insert(param);
+		Object result = groupService.insert(param);
 		param = null;
+		if(groupProp.getProperty("DUPLICATED_NAME").equals(result)) {
+			return returnErrorMsg(model, groupProp.getProperty("DUPLICATED_NAME"));
+		}
+		
 		return returnOkMsg(model);
 	}
 	
@@ -94,19 +98,21 @@ public class GroupController extends ContentController {
 		
 		param = null;
 		
-		if( count < 1) {
+		if( count > 0) {
 			return returnOkMsg(model);
 		} else {
 			return returnErrorMsg(model, "NO_GROUP");
 		}
 	}
 	
-	@RequestMapping("/list/{page}")
-	public String list(Model model, @PathVariable int page) throws Exception {
+	@RequestMapping("/list")
+	//public String list(Model model, @PathVariable int page) throws Exception {
+	public String list(Model model) throws Exception {
 		if(!isLogin()) {
 			return returnErrorMsg(model, groupProp.getProperty("LOGIN_ERROR"));
 		}
-		Data param = getPageParam(page, pageSize);
+		Data param = getParam();
+		System.out.println(param);
 		Data result = groupService.list(param);
 		addXML(model, "result", result, "group");
 		
@@ -116,13 +122,20 @@ public class GroupController extends ContentController {
 		
 	}
 	
-	@RequestMapping("/myList/{page}")
-	public String myList(Model model, @PathVariable int page) throws Exception {
+	@RequestMapping("/myList")
+	//public String myList(Model model, @PathVariable int page) throws Exception {
+	public String myList(Model model) throws Exception {
 		if(!isLogin()) {
 			return returnErrorMsg(model, groupProp.getProperty("LOGIN_ERROR"));
 		}
-		Data param = getPageParam(page, pageSize);
-		Data result = groupService.list(param);
+		//Data param = getPageParam(page, pageSize);
+		Data param = getParam();
+		User user= getUser();
+		
+		System.out.println( param.get(0, "groupName") );
+		param.add(0, "userIdx", user.getId());
+		
+		Data result = groupService.viewMyGroupList(param);
 		addXML(model, "result", result, "group");
 		
 		param = null;

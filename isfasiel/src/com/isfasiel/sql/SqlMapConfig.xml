@@ -19,7 +19,11 @@
 	<sqlMap resource="com/isfasiel/sql/content/doc/doc_oracle.xml"/>
 	<sqlMap resource="com/isfasiel/sql/content/realEstate/real_estate_oracle.xml"/>
 	<sqlMap resource="com/isfasiel/sql/content/job/job_oracle.xml"/>
+	<sqlMap resource="com/isfasiel/sql/content/movie/movie_oracle.xml"/>
 	<!-- end content -->
 	
 	<sqlMap resource="com/isfasiel/sql/watch/watch_oracle.xml"/>
+	
+	<sqlMap resource="com/isfasiel/sql/group/group_oracle.xml"/>
+	<sqlMap resource="com/isfasiel/sql/groupPath/group_path_oracle.xml"/>
 </sqlMapConfig>

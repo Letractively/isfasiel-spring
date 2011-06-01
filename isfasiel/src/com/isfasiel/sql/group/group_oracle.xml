@@ -19,39 +19,43 @@
 		SELECT GROUP_ID FROM TN_GROUP WHERE GROUP_NAME = #groupName#
 	</select>
 	<select id="groupDAO.list" resultClass="hashMap">
-		<include refid="groupDAO.preList"/>
-			SELECT G.GROUP_ID, G.GROUP_NAME 
+<!--		<include refid="groupDAO.preList"/>-->
+			SELECT G.GROUP_ID, G.GROUP_NAME, UI.USER_EMAIL 
 			FROM
 					TN_GROUP G
 				,	TN_USER_GROUP U
+				,	TN_USER_INFO UI
 			WHERE
 					G.DEL_YN = 'N'
 				AND	U.DEL_YN = 'N'
 				AND	U.GROUP_ID = G.GROUP_ID
+				AND	UI.USER_IDX = U.USER_IDX
 				<isNotEmpty prepend=" AND " property="groupName">
-					G.GROUP_NAME = '%' || #groupName# || '%'
+					G.GROUP_NAME LIKE '%' || #groupName# || '%'
 				</isNotEmpty>
 			ORDER BY G.GROUP_ID DESC
 		 
-		<include refid="groupDAO.nextList"/>
+<!--		<include refid="groupDAO.nextList"/>-->
 	</select>
 	<select id="groupDAO.myList" resultClass="hashMap">
-		<include refid="groupDAO.preList"/>
-			SELECT G.GROUP_ID, G.GROUP_NAME 
+<!--		<include refid="groupDAO.preList"/>-->
+			SELECT G.GROUP_ID, G.GROUP_NAME, UI.USER_EMAIL
 			FROM
 					TN_GROUP G
 				,	TN_USER_GROUP U
+				,	TN_USER_INFO UI
 			WHERE
 					G.DEL_YN = 'N'
 				AND	U.DEL_YN = 'N'
 				AND	U.GROUP_ID = G.GROUP_ID
+				AND	UI.USER_IDX = U.USER_IDX
 				AND U.USER_IDX = #userIdx#
 				<isNotEmpty prepend=" AND " property="groupName">
-					G.GROUP_NAME = '%' || #groupName# || '%'
+					G.GROUP_NAME LIKE '%' || #groupName# || '%'
 				</isNotEmpty>
 			ORDER BY G.GROUP_ID DESC
 		 
-		<include refid="groupDAO.nextList"/>
+<!--		<include refid="groupDAO.nextList"/>-->
 	</select>
 	
 	<update id="groupDAO.delete">

@@ -26,13 +26,14 @@ public class JobController extends ContentController{
 	private String path = "content/xml";
 	
 	@RequestMapping(value="/delete/{contentId}")
-	public String deleteContent(Model model) throws Exception {
+	public String deleteContent(Model model, @PathVariable long contentId) throws Exception {
 		Data result = new Data();
 		User user = getUser();
 		if(user != null) {
 			try {
 				Data param = getParam();
 				param.add(0, "userIdx", user.getId());
+				param.add(0, "contentId", contentId);
 				jobService.delete(param);
 				result.add(0,"result", "OK");
 				
@@ -81,6 +82,7 @@ public class JobController extends ContentController{
 			try {
 				Data param = getParam();
 				param.add(0, "userIdx", user.getId());
+				System.out.println(param);
 				jobService.update(param);
 				result.add(0,"result", "OK");
 				

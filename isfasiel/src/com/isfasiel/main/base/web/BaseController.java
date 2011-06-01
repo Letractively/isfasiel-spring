@@ -54,6 +54,10 @@ public class BaseController {
 		return new Data(request) ;
 	}
 	
+	protected Data getParam(HttpServletRequest request) throws Exception {
+		return new Data(request);
+	}
+	
 	protected void addList(Model model, String name, Data data) {
 		model.addAttribute(name, data.toList());
 	}
@@ -140,6 +144,10 @@ public class BaseController {
 	
 	protected String getContextPath() {
 		return request.getSession().getServletContext().getRealPath("/");
+	}
+	
+	protected String getContextPath(String path) {
+		return request.getSession().getServletContext().getRealPath(path);
 	}
 	
 	protected String getRemoteIP() {

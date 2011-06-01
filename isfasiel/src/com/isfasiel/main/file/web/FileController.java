@@ -69,6 +69,36 @@ public class FileController extends BaseController {
 		
 	}
 	
+	@RequestMapping(value="/file/image.do")
+	public String imageView(Model model) throws Exception {
+		model.addAttribute("url", getParam().getString(0,"url"));
+		return "file/imageWeb";
+	}
+	
+	@RequestMapping(value="/file/mov/{fileId}")
+	public void downloadForMov(@PathVariable("fileId") Long fileId, HttpServletResponse response) throws Exception {
+		Data param = new Data();
+		param.add("fileId", fileId);
+		String ids = param.getString("fileId");
+		ids = ids.replaceAll("\r", "");
+		ids = ids.replaceAll("\n", "");
+		if (ids.contains(";")) {
+			ids = ids.substring(0, ids.indexOf(";"));
+		} 
+		param.add("fileId", Integer.parseInt(ids));
+		
+		Data result = fileService.getFile(param);
+		String dest = fileUtil.copyFileToWebServer(getContextPath("/tempFile/"), 
+								result.getString("dirType") + "/" + result.getString("phyPath"),
+								result.getString("phyName"));
+		
+		result = null;
+		param = null;
+		response.sendRedirect(dest);
+	}
+	
+	
+	
 	/**
 	 * 디렉토리 정보를 생성한다.
 	 * @param realPath
@@ -90,6 +120,7 @@ public class FileController extends BaseController {
 	
 	/**
 	 * upload files into the server
+	 * this is just for a testing 
 	 * @param request
 	 * @param userId
 	 * @param cntId

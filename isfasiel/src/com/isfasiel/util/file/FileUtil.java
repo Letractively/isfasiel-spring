@@ -6,8 +6,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Properties;
@@ -139,6 +142,46 @@ public class FileUtil {
 		}
 		
 		return true;
+	}
+	
+	public String copyFileToWebServer(String basePath, String path, String phyName) throws Exception {
+		
+		String downFileName = properties.getProperty("baseDir") + SEPERATOR + path + SEPERATOR + phyName;
+		downFileName = downFileName.replaceAll("\\\\", "/");
+		
+		String destFileName = basePath + SEPERATOR + path + SEPERATOR + phyName;
+		destFileName = destFileName.replaceAll("\\\\", "/");
+		String destPath = null;
+		File file = new File(downFileName);
+		File destFile = new File(destFileName);
+		if( !file.exists() ) {
+			throw new FileNotFoundException(downFileName);
+		}
+		
+		if(!file.isFile()) {
+			throw new FileNotFoundException(downFileName);
+		}
+		
+		if( destFile.exists() ) {
+			return path + "/" + phyName;
+		}
+		
+		File dir = new File(basePath + SEPERATOR + path + SEPERATOR);
+		if( !dir.exists() ) {
+			dir.mkdirs();
+		}
+		
+		InputStream in = new FileInputStream(file);
+		OutputStream out = new FileOutputStream(destFile);
+		byte[] buf = new byte[1024];
+		int len;
+		while ((len = in.read(buf)) > 0){
+			out.write(buf, 0, len);
+		}
+		in.close();
+		out.close();
+		
+		return path + "/" + phyName;//destPath;
 	}
 	
 	/**

@@ -7,14 +7,15 @@
 	<typeAlias alias="hashMap" type="java.util.HashMap"/>
 	
 	<select id="movieDAO.list" resultClass="hashMap">
-		SELECT * FROM ( 
-			SELECT A.*, ROWNUM RNUM FROM (
+		
 				SELECT 
 					C.CONTENT_ID 
 					,	C.TITLE 
 					,	U.USER_EMAIL 
 					,	C.VIEW_COUNT 
 					,	C.CONTENT_TYPE
+					,	M.OPENING_DATE
+					,	M.CLOSING_DATE
 					,	(SELECT COUNT(*) 
 							FROM TN_CNT_CMT CM 
 							WHERE	
@@ -22,9 +23,23 @@
 								AND	CM.DEL_YN = 'N'
 								AND	CM.STATE = 0)
 						 AS CMT_COUNT
-				FROM TN_CONTENT C, TN_USER_INFO U, TN_MOVIE M
-				WHERE	M.CONTENT_ID = C.CONTENT_ID
-						AND U.USER_IDX = C.USER_IDX
+				FROM		TN_CONTENT C
+						,	TN_USER_INFO U
+						,	TN_MOVIE M
+						,	TN_CNT_PATH P 
+				WHERE	M.CONTENT_ID		= C.CONTENT_ID
+						AND U.USER_IDX		= C.USER_IDX
+						AND C.CONTENT_ID	= P.CONTENT_ID
+						AND P.PATH_ID		= #pathId#
+						AND 
+						(
+								C.USER_IDX		= #userIdx#
+							OR  
+								(
+										sysdate &gt;to_date(M.OPENING_DATE, 'dd/mm/yyyy', 'nls_date_language=korean') -1
+									AND sysdate &lt; to_date(M.CLOSING_DATE, 'dd/mm/yyyy', 'nls_date_language=korean') +1
+								)
+						)
 					<isNotEmpty property="title" close="" open="" prepend="AND"> 
 						TITLE LIKE '%' || #title# || '%' 
 					</isNotEmpty>
@@ -32,29 +47,38 @@
 						U.USER_EMAIL LIKE '%' || #userEmail# || '%' 
 					</isNotEmpty>
 				ORDER BY C.CONTENT_ID DESC
-			) A WHERE ROWNUM 
-			<![CDATA[<=]]> #lastIndex# ) WHERE RNUM <![CDATA[>=]]> #firstIndex# 
+		
 	</select>
 	<insert id="movieDAO.insert">
 		INSERT INTO TN_MOVIE (
 			CONTENT_ID,
 			BODY,
+			OPENING_DATE,
+			CLOSING_DATE
 			) 
 		VALUES ( 
 			#contentId#,
 			#body#,
+			#openingDate#,
+			#closingDate#
 		)
 	</insert>
-	<update id="realEstateDAO.update">
+	<update id="movieDAO.update">
 		UPDATE TN_REAL_ESTATE
-		SET	BODY	= #body#,
+		SET	
+				BODY	= #body#
+			,	OPENING_DATE = #openingDate#
+			,	CLOSING_DATE = #closingDate#
+		
 		WHERE
 			CONTENT_ID = #contentId#
 	</update>
 	
-	<select id="realEstateDAO.select" resultClass="hashMap">
+	<select id="movieDAO.select" resultClass="hashMap">
 		SELECT C.*
-			, R.BODY
+			, M.BODY
+			, M.OPENING_DATE
+			, M.CLOSING_DATE
 		FROM TN_CONTENT C, TN_MOVIE M
 		WHERE 
 			M.CONTENT_ID = C.CONTENT_ID
