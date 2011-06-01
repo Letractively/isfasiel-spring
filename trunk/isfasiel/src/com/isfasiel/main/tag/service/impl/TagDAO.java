@@ -83,8 +83,11 @@ public class TagDAO extends BaseDAO {
 	 */
 	public void updateTag(long contentId, String[] tagNames) throws Exception {
 		Data rs = new Data(this.getSqlMapClientTemplate().queryForList("tagDAO.connSelectByContent", contentId));
-		tagNames = text.toUnique(tagNames);
-		addCntTags(contentId, tagNames, rs);
+		
+		if( tagNames != null) {
+			tagNames = text.toUnique(tagNames);
+			addCntTags(contentId, tagNames, rs);
+		}
 		delCntTags(contentId, tagNames, rs);
 		tagNames = null;
 		rs = null;

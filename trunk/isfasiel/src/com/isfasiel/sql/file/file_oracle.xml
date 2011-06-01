@@ -75,11 +75,17 @@
 	<![CDATA[
 		SELECT B.FILE_NAME
 				, B.FILE_ID
+				, B.EXTENTION
+				, B.PHY_NAME
+				, C.PHY_PATH
+				, C.DIR_TYPE
 			FROM TN_CNT_FILE A
 				, TN_FILE B 
+				, TN_DIR C
     		WHERE A.FILE_ID = B.FILE_ID 
     			AND A.DEL_YN = 'N' 
     			AND B.DEL_YN = 'N'
+    			AND C.DIR_ID = B.DIR_ID
     			AND A.CONTENT_ID = #contentId#
 	]]> 
 	</select>

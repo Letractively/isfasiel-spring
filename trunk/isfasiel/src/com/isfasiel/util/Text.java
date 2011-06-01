@@ -75,6 +75,9 @@ public class Text {
 	}
 	
 	public String[] toUnique(String[] stringList) {
+		if (stringList == null) {
+			return null;
+		}
 		String[] changedList = null;
 		List<String> checkedList = new ArrayList<String>();
 		boolean isDuplicated = false;

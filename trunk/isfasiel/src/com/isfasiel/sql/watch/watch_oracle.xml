@@ -19,6 +19,9 @@
 				C.CONTENT_ID = W.CONTENT_ID
 			AND	U.USER_IDX = W.USER_IDX
 			AND W.USER_IDX = #userIdx#
+			<isNotEmpty property="title">
+			AND C.TITLE LIKE '%' || #title# || '%'
+			</isNotEmpty>
 		ORDER BY W.CRT_TIME DESC
 	</select>
 	<insert id="watchDAO.insert">

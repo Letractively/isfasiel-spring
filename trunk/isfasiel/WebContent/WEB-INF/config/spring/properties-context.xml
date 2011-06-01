@@ -35,7 +35,7 @@
 		<constructor-arg>
 			<props>
 				<prop key="LOGIN_ERROR"><![CDATA[LOGIN_ERROR]]></prop>
-				<prop key="DUPLICATED_NAME"><![CDATA[DUPLICATED_NAME]]></prop>
+				<prop key="DUPLICATED_NAME"><![CDATA[This group name is duplicated.]]></prop>
 				<prop key="NO_GROUP_NAME"><![CDATA[NO_GROUP_NAME]]></prop>
 				<prop key="NO_GROUP_ID"><![CDATA[NO_GROUP_ID]]></prop>
 				<prop key="NO_GROUP"><![CDATA[NO_GROUP]]></prop>
@@ -48,7 +48,7 @@
 		<constructor-arg>
 			<props>
 				<prop key="LOGIN_ERROR"><![CDATA[LOGIN_ERROR]]></prop>
-				<prop key="DUPLICATED_NAME"><![CDATA[DUPLICATED_NAME]]></prop>
+				<prop key="DUPLICATED_NAME"><![CDATA[This path name is duplicated.]]></prop>
 				<prop key="NO_PATH_NAME"><![CDATA[NO_PATH_NAME]]></prop>
 				<prop key="NO_GROUP_ID"><![CDATA[NO_GROUP_ID]]></prop>
 				<prop key="NO_PATH_ID"><![CDATA[NO_PATH_ID]]></prop>

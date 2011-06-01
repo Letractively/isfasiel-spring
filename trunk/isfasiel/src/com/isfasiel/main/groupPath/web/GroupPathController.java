@@ -7,10 +7,10 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isfasiel.main.content.web.ContentController;
+import com.isfasiel.main.domain.User;
 import com.isfasiel.main.groupPath.service.GroupPathService;
 import com.isfasiel.util.Text;
 import com.isfasiel.util.data.Data;
@@ -38,7 +38,8 @@ public class GroupPathController extends ContentController {
 		}
 		
 		Data param = getParam();
-		
+		User user= getUser();
+		param.add(0, "userIdx", user.getId());
 		if(text.isNull(param.getString(0,"groupId"))) {
 			param = null;
 			return returnErrorMsg(model, groupPathProp.getProperty("NO_GROUP_ID"));
@@ -49,10 +50,15 @@ public class GroupPathController extends ContentController {
 			return returnErrorMsg(model, groupPathProp.getProperty("NO_PATH_NAME"));
 		}
 		
-		groupPathService.insert(param);
-		
+		Object result = groupPathService.insert(param);
 		param = null;
+		if(groupPathProp.getProperty("DUPLICATED_NAME").equals(result)) {
+			return returnErrorMsg(model, groupPathProp.getProperty("DUPLICATED_NAME"));
+		}
+		
 		return returnOkMsg(model);
+		
+		
 		//return path;
 	}
 	
@@ -63,7 +69,8 @@ public class GroupPathController extends ContentController {
 		}
 		
 		Data param = getParam();
-		
+		User user= getUser();
+		param.add(0, "userIdx", user.getId());
 		if(text.isNull(param.getString(0,"groupId"))) {
 			param = null;
 			return returnErrorMsg(model, groupPathProp.getProperty("NO_GROUP_ID"));
@@ -93,7 +100,8 @@ public class GroupPathController extends ContentController {
 		}
 		
 		Data param = getParam();
-		
+		User user= getUser();
+		param.add(0, "userIdx", user.getId());
 		if(text.isNull(param.getString(0,"groupId"))) {
 			param = null;
 			return returnErrorMsg(model, groupPathProp.getProperty("NO_GROUP_ID"));
@@ -111,13 +119,16 @@ public class GroupPathController extends ContentController {
 		return returnOkMsg(model);
 	}
 	
-	@RequestMapping("/list/{page}")
-	public String delete(Model model, @PathVariable int page) throws Exception {
+	//@RequestMapping("/list/{page}")
+	//public String delete(Model model, @PathVariable int page) throws Exception {
+	@RequestMapping("/list")
+	public String list(Model model) throws Exception {
 		if(!isLogin()) {
 			return returnErrorMsg(model,  groupPathProp.getProperty("LOGIN_ERROR"));
 		}
 		
-		Data param = getPageParam(page, pageSize);
+		//Data param = getPageParam(page, pageSize);
+		Data param = getParam();
 		
 		if(text.isNull(param.getString(0,"groupId"))) {
 			param = null;

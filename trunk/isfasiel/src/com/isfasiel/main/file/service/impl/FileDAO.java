@@ -28,7 +28,9 @@ public class FileDAO extends BaseDAO {
 			} else {
 				Long fileId = getSeq("SEQ_TN_FILE");
 				data.add(i, "fileId", fileId);
+				data.add(i, "contentId", data.get(0, "contentId"));
 				insert("FileDAO.insertFile", data.getRecord(i));
+				insert("FileDAO.insertMap", data.getRecord(i));
 			}
 		}
 		return data;
