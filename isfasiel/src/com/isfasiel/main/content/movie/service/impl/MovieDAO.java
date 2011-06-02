@@ -22,4 +22,8 @@ public class MovieDAO extends BaseDAO {
 	public Data list(Data data) throws Exception {
 		return list("movieDAO.list", data);
 	}
+	
+	public Data listAll(Data data) throws Exception {
+		return list("movieDAO.listAll", data);
+	}
 }

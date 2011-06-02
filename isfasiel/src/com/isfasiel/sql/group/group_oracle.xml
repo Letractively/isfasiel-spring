@@ -16,7 +16,7 @@
 		WHERE RNUM &gt;= #firstIndex#
 	</sql>
 	<select id="groupDAO.checkName" resultClass="hashMap">
-		SELECT GROUP_ID FROM TN_GROUP WHERE GROUP_NAME = #groupName#
+		SELECT DEL_YN FROM TN_GROUP WHERE GROUP_NAME = #groupName# 
 	</select>
 	<select id="groupDAO.list" resultClass="hashMap">
 <!--		<include refid="groupDAO.preList"/>-->
@@ -85,4 +85,11 @@
 			, #userIdx#
 		)
 	</insert>
+	<update id="groupDAO.update">
+		UPDATE TN_GROUP
+			SET
+				GROUP_NAME	= #groupName#
+			WHERE
+				GROUP_ID	= #groupId#
+	</update>
 </sqlMap>

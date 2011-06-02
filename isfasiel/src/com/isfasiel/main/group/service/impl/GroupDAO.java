@@ -17,8 +17,11 @@ public class GroupDAO extends BaseDAO {
 	
 	
 	public Object insert(Data data) throws Exception {
-		if( !list("groupDAO.checkName", data).isNull() ) {
-			return groupProp.getProperty("DUPLICATED_NAME");
+		Data result = list("groupDAO.checkName", data);
+		if( !result.isNull() ) {
+			if("N".equals(result.getString(0, "delYn"))) {
+				return groupProp.getProperty("DUPLICATED_NAME");
+			}
 		}
 		long groupId = getSeq("SEQ_TN_GROUP");
 		data.add(0, "groupId", groupId);
@@ -27,8 +30,12 @@ public class GroupDAO extends BaseDAO {
 	}
 	
 	public int update(Data data) throws Exception {
-		if( list("groupDAO.checkName", data).isNull() ) {
-			return -1;
+		Data result = list("groupDAO.checkName", data);
+		
+		if( !result.isNull() ) {
+			if("N".equals(result.getString(0, "delYn")) ) {
+				return -1;
+			}
 		}
 		return update("groupDAO.update", data);
 	}
