@@ -1,5 +1,7 @@
 package com.isfasiel.main.content.web;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -100,6 +102,25 @@ public class ContentController extends BaseController {
 		param.add(0,"pageSize", pageSize);
 		param = pageUtil.getRowSize(param);
 		return param;
+	}
+	
+	public Data toFileData(List<Data> result) throws Exception{
+		int size = result.get(2).size();
+		int index = 0;//EXTENTION
+		for(int i =0; i < size; i++) {
+			if( "mov".equals( result.get(2).getString(i, "extention")) ) {
+				String movieFile = fileUtil.copyFileToWebServer(getContextPath("/tempFile/"), 
+						result.get(2).getString(i,"dirType") + "/" + result.get(2).getString(i, "phyPath"),
+						result.get(2).getString(i,"phyName"));
+				
+				result.get(0).add(0, "movieFile", "/tempFile/"+ movieFile);
+			} else {
+				String filePath = "/file/download/" + result.get(2).getString(i, "fileId");
+				result.get(0).add(index, "imageFile", filePath);
+				index += 1;
+			}
+		}
+		return result.get(0);
 	}
 	
 }

@@ -27,6 +27,13 @@
 			</isNotEmpty>
 		ORDER BY P.PATH_ID DESC
 	</select>
+	<update id="groupPathDAO.update">
+		UPDATE TN_PATH
+			SET
+				PATH_NAME	= #pathName#
+			WHERE
+				PATH_ID = #pathId#
+	</update>
 	<update id="groupPathDAO.delete">
 		UPDATE TN_GROUP_PATH
 		SET DEL_YN = 'Y'

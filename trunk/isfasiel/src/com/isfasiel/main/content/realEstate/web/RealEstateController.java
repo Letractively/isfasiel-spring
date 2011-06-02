@@ -3,6 +3,7 @@ package com.isfasiel.main.content.realEstate.web;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +48,7 @@ public class RealEstateController extends ContentController {
 	}
 	
 	@RequestMapping(value="/create.do")
-	public String createContent(Model model) throws Exception {
+	public String createContent(Model model, HttpServletRequest request) throws Exception {
 		Data result = new Data();
 		User user = getUser();
 		if(user != null) {
@@ -60,8 +61,13 @@ public class RealEstateController extends ContentController {
 				param.add(0, "userIdx", user.getId());
 				param.add(0, "ipAddr", getRemoteIP());
 				System.out.println(param);
-				realEstateService.insert(param);
+				long contentId = realEstateService.insert(param);
 				result.add(0,"result", "OK");
+				
+				Data files = uploadFiles(request, contentId);
+				//files.add(0,"contentId", contentId);
+				System.out.println(files);
+				param = null;
 				
 			} catch (Exception e) {
 				result.add(0,"result", "NO");
@@ -113,8 +119,11 @@ public class RealEstateController extends ContentController {
 		param.add(0, "contentId", contentId);
 		param.add(0, "userIdx", user.getId());
 		List<Data> result = realEstateService.select(param);
+		
+		Data fileResult = toFileData(result);
+		
 		//result.get(0).add("comment", result.get(2).toXMl("comment"));
-		addXML(model, "result", result.get(0), "content");
+		addXML(model, "result", fileResult, "content");
 		
 		param = null;
 		return path;

@@ -31,24 +31,52 @@
 						AND U.USER_IDX		= C.USER_IDX
 						AND C.CONTENT_ID	= P.CONTENT_ID
 						AND P.PATH_ID		= #pathId#
-						AND 
-						(
-								C.USER_IDX		= #userIdx#
-							OR  
-								(
-										sysdate &gt;to_date(M.OPENING_DATE, 'dd/mm/yyyy', 'nls_date_language=korean') -1
-									AND sysdate &lt; to_date(M.CLOSING_DATE, 'dd/mm/yyyy', 'nls_date_language=korean') +1
-								)
-						)
+						AND sysdate &gt;to_date(M.OPENING_DATE, 'dd/mm/yyyy', 'nls_date_language=korean') -1
+						AND sysdate &lt; to_date(M.CLOSING_DATE, 'dd/mm/yyyy', 'nls_date_language=korean') +1
 					<isNotEmpty property="title" close="" open="" prepend="AND"> 
 						TITLE LIKE '%' || #title# || '%' 
 					</isNotEmpty>
 					<isNotEmpty property="userEmail" close="" open="" prepend="AND"> 
 						U.USER_EMAIL LIKE '%' || #userEmail# || '%' 
 					</isNotEmpty>
-				ORDER BY C.CONTENT_ID DESC
+				ORDER BY OPENING_DATE, CLOSING_DATE, C.CONTENT_ID DESC
 		
 	</select>
+	
+	<select id="movieDAO.listAll" resultClass="hashMap">
+				SELECT 
+					C.CONTENT_ID 
+					,	C.TITLE 
+					,	U.USER_EMAIL 
+					,	C.VIEW_COUNT 
+					,	C.CONTENT_TYPE
+					,	M.OPENING_DATE
+					,	M.CLOSING_DATE
+					,	(SELECT COUNT(*) 
+							FROM TN_CNT_CMT CM 
+							WHERE	
+									CM.CONTENT_ID = C.CONTENT_ID 
+								AND	CM.DEL_YN = 'N'
+								AND	CM.STATE = 0)
+						 AS CMT_COUNT
+				FROM		TN_CONTENT C
+						,	TN_USER_INFO U
+						,	TN_MOVIE M
+						,	TN_CNT_PATH P 
+				WHERE	M.CONTENT_ID		= C.CONTENT_ID
+						AND U.USER_IDX		= C.USER_IDX
+						AND C.CONTENT_ID	= P.CONTENT_ID
+						AND P.PATH_ID		= #pathId#
+					<isNotEmpty property="title" close="" open="" prepend="AND"> 
+						TITLE LIKE '%' || #title# || '%' 
+					</isNotEmpty>
+					<isNotEmpty property="userEmail" close="" open="" prepend="AND"> 
+						U.USER_EMAIL LIKE '%' || #userEmail# || '%' 
+					</isNotEmpty>
+				ORDER BY OPENING_DATE, CLOSING_DATE, C.CONTENT_ID DESC
+		
+	</select>
+	
 	<insert id="movieDAO.insert">
 		INSERT INTO TN_MOVIE (
 			CONTENT_ID,
@@ -64,11 +92,12 @@
 		)
 	</insert>
 	<update id="movieDAO.update">
-		UPDATE TN_REAL_ESTATE
+		UPDATE TN_MOVIE
 		SET	
 				BODY	= #body#
 			,	OPENING_DATE = #openingDate#
 			,	CLOSING_DATE = #closingDate#
+				
 		
 		WHERE
 			CONTENT_ID = #contentId#

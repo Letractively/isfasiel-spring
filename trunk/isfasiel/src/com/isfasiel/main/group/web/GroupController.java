@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isfasiel.main.content.web.ContentController;
@@ -73,10 +72,10 @@ public class GroupController extends ContentController {
 		
 		int count = groupService.update(param);
 		param = null;
-		if( count < 1) {
+		if( count > 0) {
 			return returnOkMsg(model);
 		} else {
-			return returnErrorMsg(model, "NO_GROUP");
+			return returnErrorMsg(model,groupProp.getProperty("NO_GROUP"));
 		}
 	}
 	
@@ -101,7 +100,7 @@ public class GroupController extends ContentController {
 		if( count > 0) {
 			return returnOkMsg(model);
 		} else {
-			return returnErrorMsg(model, "NO_GROUP");
+			return returnErrorMsg(model, groupProp.getProperty("DUPLICATED_NAME"));
 		}
 	}
 	

@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.isfasiel.main.content.service.ContentService;
+import com.isfasiel.main.content.movie.service.MovieService;
 import com.isfasiel.main.content.web.ContentController;
 import com.isfasiel.main.domain.User;
 import com.isfasiel.util.data.Data;
@@ -23,7 +23,7 @@ public class MovieController extends ContentController {
 	private int pageSize = 20;
 	
 	@Resource(name="movieService")
-	ContentService movieService;
+	MovieService movieService;
 	
 	@Resource(name="movie.error")
 	Properties movieProp;
@@ -120,7 +120,7 @@ public class MovieController extends ContentController {
 	}
 	
 	@RequestMapping("list/{page}")
-	public String view(Model model, @PathVariable int page) throws Exception {
+	public String list(Model model, @PathVariable int page) throws Exception {
 		if(!isLogin()) {
 			return returnErrorMsg(model, "NO_LOGIN");
 		}
@@ -131,6 +131,25 @@ public class MovieController extends ContentController {
 		
 		System.out.println(param);
 		Data result = movieService.list(param);
+
+		addXML(model, "result", result, "content");
+		result = null;
+		param = null;
+		return path;
+	}
+	
+	@RequestMapping("listAll/{page}")
+	public String listAll(Model model, @PathVariable int page) throws Exception {
+		if(!isLogin()) {
+			return returnErrorMsg(model, "NO_LOGIN");
+		}
+		
+		User user = getUser();
+		Data param = getPageParam(page, pageSize);
+		param.add(0, "userIdx", user.getId());
+		
+		System.out.println(param);
+		Data result = movieService.listAll(param);
 
 		addXML(model, "result", result, "content");
 		result = null;

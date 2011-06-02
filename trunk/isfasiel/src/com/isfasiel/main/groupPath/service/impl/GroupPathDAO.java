@@ -28,9 +28,9 @@ public class GroupPathDAO extends BaseDAO {
 	}
 	
 	public int update(Data data) throws Exception {
-		if( list("groupPathDAO.checkName", data).isNull() ) {
-			return -1;
-		}
+		//if( list("groupPathDAO.checkName", data).isNull() ) {
+		//	return -1;
+		//}
 		return update("groupPathDAO.update", data);
 	}
 	

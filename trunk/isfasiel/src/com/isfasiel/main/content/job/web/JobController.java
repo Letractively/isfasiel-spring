@@ -36,7 +36,8 @@ public class JobController extends ContentController{
 				param.add(0, "contentId", contentId);
 				jobService.delete(param);
 				result.add(0,"result", "OK");
-				
+				Data files = uploadFiles(request, contentId);
+				System.out.println(files);
 			} catch (Exception e) {
 				result.add(0,"result", "NO");
 			}
@@ -113,7 +114,11 @@ public class JobController extends ContentController{
 		param.add(0, "userIdx", user.getId());
 		List<Data> result = jobService.select(param);
 		//result.get(0).add("comment", result.get(2).toXMl("comment"));
-		addXML(model, "result", result.get(0), "content");
+		Data fileResult = toFileData(result);
+		
+		//result.get(0).add("comment", result.get(2).toXMl("comment"));
+		addXML(model, "result", fileResult, "content");
+		//addXML(model, "result", result.get(0), "content");
 		
 		param = null;
 		return path;

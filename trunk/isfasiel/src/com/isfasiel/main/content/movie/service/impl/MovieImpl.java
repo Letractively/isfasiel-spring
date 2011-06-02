@@ -4,11 +4,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.isfasiel.main.content.movie.service.MovieService;
 import com.isfasiel.main.content.service.impl.ContentImpl;
 import com.isfasiel.util.data.Data;
 
 @Service("movieService")
-public class MovieImpl extends ContentImpl {
+public class MovieImpl extends ContentImpl implements MovieService {
 
 	@Resource(name="movieDAO")
 	MovieDAO movieDAO;
@@ -32,5 +33,11 @@ public class MovieImpl extends ContentImpl {
 	public Data list(Data data) throws Exception {
 		return movieDAO.list(data);
 	}
+
+	@Override
+	public Data listAll(Data data) throws Exception {
+		return movieDAO.listAll(data);
+	}
+	
 
 }
