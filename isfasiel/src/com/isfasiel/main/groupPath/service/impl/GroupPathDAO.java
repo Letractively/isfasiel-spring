@@ -17,9 +17,11 @@ public class GroupPathDAO extends BaseDAO {
 	
 	
 	public Object insert(Data data) throws Exception {
+		/*
 		if( !list("groupPathDAO.checkName", data).isNull() ) {
 			return groupPathProp.getProperty("DUPLICATED_NAME");
 		}
+		*/
 		long pathId = getSeq("SEQ_TN_PATH");
 		data.add(0, "pathId", pathId);
 		

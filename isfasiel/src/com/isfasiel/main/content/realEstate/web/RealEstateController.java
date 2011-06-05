@@ -55,7 +55,7 @@ public class RealEstateController extends ContentController {
 			
 		
 			try {
-				Data param = getParam();
+				Data param = getParam(request);
 				
 				param.add(0, "contentType", "R");
 				param.add(0, "userIdx", user.getId());
