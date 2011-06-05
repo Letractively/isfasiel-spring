@@ -51,6 +51,7 @@ public class LoginController extends UserController{
 	public String login(@ModelAttribute @Valid Login login, BindingResult result, Model model /*, SessionStatus status */) throws Exception {
 		if (result.hasErrors()) return "login";
 		login.setPassword(encode(login.getPassword()) );
+		
 		this.loginValidator.validate(login, result);
 		if (result.hasErrors()) {
 			return "login";
