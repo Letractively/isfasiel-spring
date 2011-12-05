@@ -64,6 +64,11 @@ public class LoginController extends UserController{
 		}
 	}
 	
+	@RequestMapping(value="/join.do")
+	public String join()throws Exception {
+		return "user/join";
+	}
+	
 	@RequestMapping(value="/create.do" ,method=RequestMethod.POST)
 	public String create(@ModelAttribute User user, Model model) throws Exception{
 		user.setPassword(encode(user.getPassword()) );
