@@ -13,10 +13,10 @@ public class ContentDAO extends BaseDAO {
 	}
 	
 	public Long insertContent(Data data) throws Exception {
-		Long contentId = getContentSeq();
-		data.add(0, "contentId", contentId);
+		//Long contentId = getContentSeq();
+		//data.add(0, "contentId", contentId);
 		insert("contentDAO.insert", data);
-		return contentId;
+		return getContentSeq();
 	}
 	
 	public boolean isOkay(Data data) throws Exception {
